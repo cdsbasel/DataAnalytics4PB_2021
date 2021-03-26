@@ -85,7 +85,7 @@ Am Ende des Practicals wirst du wissen wie man:
 
 ### A - Setup
 
-1. Öffne dein `DataAnalytics4PB` R Projekt. Es sollte die Ordner `1_Data`, `2_Assets`, und `3_Markdown` enthalten. 
+1. Öffne dein `DataAnalytics4PB` R Projekt, dass ihr von Github gecloned habt. Es sollte die Ordner `1_Data`, `2_Assets`, und `3_Markdown` enthalten. 
 
 2. Öffne ein neues RMarkdown Skript und wähle das Template "HTML" aus (siehe screenshot).
 
