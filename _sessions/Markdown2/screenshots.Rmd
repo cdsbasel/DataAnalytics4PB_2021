@@ -1,0 +1,78 @@
+---
+title: "Markdown"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+| Spalte 1  | 
+|-----------|
+| 12345     | 
+
+| Spalte 1  | Spalte 2  | 
+|-----------|-----------|
+| 12345     | 67890     |
+
+| Spalte 1  | Spalte 2  | 
+|-----------|-----------|
+| 12345     | 67890     |
+| ABCDE     | FGHIJ     |
+
+| Spalte 1  | Spalte 2  | 
+|:-----------|-----------|
+| 12345     | 67890     |
+| ABCDE     | FGHIJ     |
+
+| Spalte 1  | Spalte 2  | 
+|-----------:|-----------|
+| 12345     | 67890     |
+| ABCDE     | FGHIJ     |
+
+| Spalte 1  | Spalte 2  | 
+|-----------:|-----------:|
+| 12345     | 67890     |
+| ABCDE     | FGHIJ     |
+
+| Spalte 1  | Spalte 2  | 
+|:-----------:|-----------:|
+| 12345     | 67890     |
+| ABCDE     | FGHIJ     |
+
+
+| Spalte 1  | Spalte 2  | 
+|:-----------:|:-----------:|
+| 12345     | 67890     |
+| ABCDE     | FGHIJ     |
+
+
+> Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread. (Hadley Wickham)
+
+>> Zitate können auf mehreren Levels verschachtelt werden.
+
+
+
+
+---
+
+
+fruit| price
+-----|-----:
+apple|2.05
+pear|1.37
+orange|3.09
+
+
+
+| Spalte 1 |  Spalte 2 | Spalte 3 |
+|:---:|:---|---:|
+| Inhalt 1 |  Inhalt 2 | Inhalt 3 |
+
+
+fruit| price
+-----|-----
+apple|2.05
+pear|1.37
+orange|3.09
