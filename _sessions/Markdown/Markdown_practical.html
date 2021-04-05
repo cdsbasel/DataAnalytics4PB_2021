@@ -252,15 +252,15 @@ pre code,  .md:not(.use-csslab) pre code {
 library(tidyverse)
 library(lubridate)</code></pre>
 <ol start="6" style="list-style-type: decimal">
-<li>Lade den <code>Airbnb</code> Datensatz mit <code>read_csv()</code> ebenfalls im <code>setup</code> Chunk mit dem Code unten.</li>
+<li>Lade den <code>airbnb</code> Datensatz mit <code>read_csv()</code> ebenfalls im <code>setup</code> Chunk mit dem Code unten.</li>
 </ol>
 <pre class="r"><code># Lade Airbnb Datensatz
-Airbnb &lt;- read_csv(&quot;../1_Data/Airbnb.csv&quot;)</code></pre>
+airbnb &lt;- read_csv(&quot;../1_Data/Airbnb.csv&quot;)</code></pre>
 <ol start="7" style="list-style-type: decimal">
-<li>Verwende den Code unten um nur die beiden Jahre <code>2018</code> und <code>2019</code> aus den Daten auszuwählen und ein neues Objekt <code>Airbnb_1819</code> zu erstellen.</li>
+<li>Verwende den Code unten um nur die beiden Jahre <code>2018</code> und <code>2019</code> aus den Daten auszuwählen und ein neues Objekt <code>airbnb_1819</code> zu erstellen.</li>
 </ol>
 <pre class="r"><code># Wähle Jahre 2018 und 2019 aus
-Airbnb_1819 &lt;- Airbnb %&gt;% 
+airbnb_1819 &lt;- airbnb %&gt;% 
   filter(Erstellungsdatum &gt; &quot;2018-01-01&quot;, 
          Erstellungsdatum &lt; &quot;2019-12-31&quot;)</code></pre>
 </div>
@@ -295,15 +295,15 @@ Einstellungen von Airbnb Wohnungen haben im letzten Jahr stark zugenommen. Im Ja
 <ol start="3" style="list-style-type: decimal">
 <li>Tausche zunächst das Datum an zweiter Stelle im Text durch den folgenden inline Code aus. Nicht vergessen, der Code muss zwischen zwei Gravis (`r Code`) gesetzt werden. Knitte das Dokument.</li>
 </ol>
-<pre class="text"><code>r min(Airbnb_1819$Erstellungsdatum)</code></pre>
+<pre class="text"><code>r min(airbnb_1819$Erstellungsdatum)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Jetzt sollte der Text ein Datum enthalten, welches aber noch nicht ganz richtig formatiert ist. Hier hilft die <code>strftime()</code> Funktion. Versuche mit dem folgenden inline Code das Datum in das richtige Format zu bringen.</li>
 </ol>
-<pre class="text"><code>r strftime(min(Airbnb_1819$Erstellungsdatum), &quot;%d.%m.%Y&quot;)</code></pre>
+<pre class="text"><code>r strftime(min(airbnb_1819$Erstellungsdatum), &quot;%d.%m.%Y&quot;)</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li><p>Als nächstes ersetze die Anzahl der Wohnungen durch <code>nrow(Airbnb_1819)</code>. Nicht das <code>r</code> am Anfang vergessen!</p></li>
-<li><p>Ersetze nun Prozentsatz der Wohnungen durch <code>round(mean(Airbnb_1819$Verfügbarkeit_90Tage &gt; 0) * 100)</code> und die durchschnittliche Verfügbarkeit durch <code>round(mean(Airbnb_1819$Verfügbarkeit_90Tage[Airbnb_1819$Verfügbarkeit_90Tage&gt;0]),1)</code>. Jetzt sollten alle Zahlen des ersten Absatz durch Code ersetzt worden sein. Überprüfe ob alles stimmt.</p></li>
-<li><p>Im nächsten Absatz ersetze die ersten beiden Zahlen durch <code>n_2019 &lt;- sum(year(Airbnb_1819$Erstellungsdatum) == 2019); n_2019</code> und <code>n_2018 &lt;- sum(year(Airbnb_1819$Erstellungsdatum) == 2018); n_2018</code>. In diesen beiden Fällen siehst du, dass auch Zuweisungen in inline Code möglich sind.</p></li>
+<li><p>Als nächstes ersetze die Anzahl der Wohnungen durch <code>nrow(airbnb_1819)</code>. Nicht das <code>r</code> am Anfang vergessen!</p></li>
+<li><p>Ersetze nun Prozentsatz der Wohnungen durch <code>round(mean(airbnb_1819$Verfügbarkeit_90Tage &gt; 0) * 100)</code> und die durchschnittliche Verfügbarkeit durch <code>round(mean(airbnb_1819$Verfügbarkeit_90Tage[airbnb_1819$Verfügbarkeit_90Tage&gt;0]),1)</code>. Jetzt sollten alle Zahlen des ersten Absatz durch Code ersetzt worden sein. Überprüfe ob alles stimmt.</p></li>
+<li><p>Im nächsten Absatz ersetze die ersten beiden Zahlen durch <code>n_2019 &lt;- sum(year(airbnb_1819$Erstellungsdatum) == 2019); n_2019</code> und <code>n_2018 &lt;- sum(year(airbnb_1819$Erstellungsdatum) == 2018); n_2018</code>. In diesen beiden Fällen siehst du, dass auch Zuweisungen in inline Code möglich sind.</p></li>
 <li><p>Ersetze nun den wert des Zuwachses am Ende des Absatzes durch <code>(round(n_2019/n_2018, 2) - 1)*100</code>, was, wie du siehst, auf die beiden zuvor im inline Code definierten Objekte zurückgreift. Knitte das Dokument und überprüfe, ob nun alle Zahlen einwandfrei wiedergegeben werden.</p></li>
 <li><p>Zuletzt verwende ** um den gesamten zweiten Absatz fett zu setzen. Setze hierfür einmal die zwei Asteriske vor das erste und nach dem letzten Wort des Absatzes. Nun alles wie im Zieldokument?</p></li>
 </ol>
@@ -320,7 +320,7 @@ Einstellungen von Airbnb Wohnungen haben im letzten Jahr stark zugenommen. Im Ja
 <li>Kopiere in den Chunk, d.h., zwischen die zwei Zeilen mit den drei Gravis/Ticks, den Code unten, welcher eine erste Version der ersten Grafik im Bericht generiert.</li>
 </ol>
 <pre class="r"><code># Plotte Häufigkeiten
-ggplot(Airbnb_1819 %&gt;% 
+ggplot(airbnb_1819 %&gt;% 
       group_by(Jahr = year(Erstellungsdatum), 
                Monat_tmp = month(Erstellungsdatum)) %&gt;% 
       summarize(Monat = as_factor(paste(first(Jahr), first(Monat_tmp), sep = &#39;-&#39;)),
@@ -358,7 +358,7 @@ Die grössten Veränderungen gab es in Marzahn - Hellersdorf und Treptow - Köpe
 <li>Vor den Text setze den folgenden Chunk, welcher die Häufigkeiten der Neueinstellungen über die Stadtteile berechnet und im Objekt <code>stadtteile</code> speichert.</li>
 </ol>
 <pre class="r"><code># Berechne Häufigkeiten über die Bezirke
-stadtteile &lt;- Airbnb_1819 %&gt;% 
+stadtteile &lt;- airbnb_1819 %&gt;% 
               group_by(Stadtteil, 
                        Jahr = year(Erstellungsdatum)) %&gt;% 
               summarize(Wohnungen = n()) %&gt;% 

@@ -107,18 +107,18 @@ library(tidyverse)
 library(lubridate)
 ```
 
-6. Lade den `Airbnb` Datensatz mit `read_csv()` ebenfalls im `setup` Chunk mit dem Code unten.
+6. Lade den `airbnb` Datensatz mit `read_csv()` ebenfalls im `setup` Chunk mit dem Code unten.
 
 ```{r echo = TRUE}
 # Lade Airbnb Datensatz
-Airbnb <- read_csv("../1_Data/Airbnb.csv")
+airbnb <- read_csv("../1_Data/Airbnb.csv")
 ```
 
-7. Verwende den Code unten um nur die beiden Jahre `2018` und `2019` aus den Daten auszuwählen und ein neues Objekt `Airbnb_1819` zu erstellen.
+7. Verwende den Code unten um nur die beiden Jahre `2018` und `2019` aus den Daten auszuwählen und ein neues Objekt `airbnb_1819` zu erstellen.
 
 ```{r echo = TRUE}
 # Wähle Jahre 2018 und 2019 aus
-Airbnb_1819 <- Airbnb %>% 
+airbnb_1819 <- airbnb %>% 
   filter(Erstellungsdatum > "2018-01-01", 
          Erstellungsdatum < "2019-12-31")
 ```
@@ -160,19 +160,19 @@ Einstellungen von Airbnb Wohnungen haben im letzten Jahr stark zugenommen. Im Ja
 3. Tausche zunächst das Datum an zweiter Stelle im Text durch den folgenden inline Code aus. Nicht vergessen, der Code muss zwischen zwei Gravis (&grave;r Code&grave;) gesetzt werden. Knitte das Dokument.  
 
 ````text
-r min(Airbnb_1819$Erstellungsdatum)
+r min(airbnb_1819$Erstellungsdatum)
 ````
 
 4. Jetzt sollte der Text ein Datum enthalten, welches aber noch nicht ganz richtig formatiert ist. Hier hilft die `strftime()` Funktion. Versuche mit dem folgenden inline Code das Datum in das richtige Format zu bringen.   
 
 ````text
-r strftime(min(Airbnb_1819$Erstellungsdatum), "%d.%m.%Y")
+r strftime(min(airbnb_1819$Erstellungsdatum), "%d.%m.%Y")
 ````
-5. Als nächstes ersetze die Anzahl der Wohnungen durch `nrow(Airbnb_1819)`. Nicht das `r` am Anfang vergessen! 
+5. Als nächstes ersetze die Anzahl der Wohnungen durch `nrow(airbnb_1819)`. Nicht das `r` am Anfang vergessen! 
 
-6. Ersetze nun Prozentsatz der Wohnungen durch `round(mean(Airbnb_1819$Verfügbarkeit_90Tage > 0) * 100)` und die durchschnittliche Verfügbarkeit durch `round(mean(Airbnb_1819$Verfügbarkeit_90Tage[Airbnb_1819$Verfügbarkeit_90Tage>0]),1)`. Jetzt sollten alle Zahlen des ersten Absatz durch Code ersetzt worden sein. Überprüfe ob alles stimmt. 
+6. Ersetze nun Prozentsatz der Wohnungen durch `round(mean(airbnb_1819$Verfügbarkeit_90Tage > 0) * 100)` und die durchschnittliche Verfügbarkeit durch `round(mean(airbnb_1819$Verfügbarkeit_90Tage[airbnb_1819$Verfügbarkeit_90Tage>0]),1)`. Jetzt sollten alle Zahlen des ersten Absatz durch Code ersetzt worden sein. Überprüfe ob alles stimmt. 
 
-7. Im nächsten Absatz ersetze die ersten beiden Zahlen durch `n_2019 <- sum(year(Airbnb_1819$Erstellungsdatum) == 2019); n_2019` und `n_2018 <- sum(year(Airbnb_1819$Erstellungsdatum) == 2018); n_2018`. In diesen beiden Fällen siehst du, dass auch Zuweisungen in inline Code möglich sind. 
+7. Im nächsten Absatz ersetze die ersten beiden Zahlen durch `n_2019 <- sum(year(airbnb_1819$Erstellungsdatum) == 2019); n_2019` und `n_2018 <- sum(year(airbnb_1819$Erstellungsdatum) == 2018); n_2018`. In diesen beiden Fällen siehst du, dass auch Zuweisungen in inline Code möglich sind. 
 
 8. Ersetze nun den wert des Zuwachses am Ende des Absatzes durch `(round(n_2019/n_2018, 2) - 1)*100`, was, wie du siehst, auf die beiden zuvor im inline Code definierten Objekte zurückgreift. Knitte das Dokument und überprüfe, ob nun alle Zahlen einwandfrei wiedergegeben werden.
 
@@ -188,7 +188,7 @@ r strftime(min(Airbnb_1819$Erstellungsdatum), "%d.%m.%Y")
 
 ```R
 # Plotte Häufigkeiten
-ggplot(Airbnb_1819 %>% 
+ggplot(airbnb_1819 %>% 
       group_by(Jahr = year(Erstellungsdatum), 
                Monat_tmp = month(Erstellungsdatum)) %>% 
       summarize(Monat = as_factor(paste(first(Jahr), first(Monat_tmp), sep = '-')),
@@ -231,7 +231,7 @@ Die grössten Veränderungen gab es in Marzahn - Hellersdorf und Treptow - Köpe
 
 ```R
 # Berechne Häufigkeiten über die Bezirke
-stadtteile <- Airbnb_1819 %>% 
+stadtteile <- airbnb_1819 %>% 
               group_by(Stadtteil, 
                        Jahr = year(Erstellungsdatum)) %>% 
               summarize(Wohnungen = n()) %>% 
