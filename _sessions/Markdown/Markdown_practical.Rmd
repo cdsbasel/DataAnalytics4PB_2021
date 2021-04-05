@@ -305,7 +305,7 @@ ggplot(stadtteile,
 
 2. Füge `fig.cap = cap` in den Optionen des Chunks der ersten Grafik ein. Dies wird dir ermöglichen gleich die Bildunterschrift im Chunk zu definieren.
 
-3. Am Ende des Grafik Chunks ergänze nun `cap = Abbildung 1. Neueinstellungen pro Monat.`. Knitte das Dokument. Du solltest nun eine Bildunterschrift sehen.
+3. Am Ende des Grafik Chunks ergänze nun `cap = "Abbildung 1. Neueinstellungen pro Monat."`. Knitte das Dokument. Du solltest nun eine Bildunterschrift sehen.
 
 4. Weitere zur nächsten Grafik. Setze das Seitenverhältnis für die zweite Grafik auf .5.
 
