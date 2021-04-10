@@ -1,0 +1,542 @@
+---
+title: "Unsupervised learning"
+author: "<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0'><col width='10%'><col width='10%'>
+  <tr style='border:none'>
+    <td style='display:block;width:100%;text-align:left;vertical-align:bottom;padding:0;margin:0;border:none' nowrap>
+      <font style='font-style:normal'>Machine learning with R</font><br>
+      <a href='https://therbootcamp.github.io/ML-DHLab'>
+        <i class='fas fa-clock' style='font-size:.9em;' ></i>
+      </a>
+      <a href='https://therbootcamp.github.io'>
+        <i class='fas fa-home' style='font-size:.9em;'></i>
+      </a>
+      <a href='mailto:therbootcamp@gmail.com'>
+        <i class='fas fa-envelope' style='font-size: .9em;'></i>
+      </a>
+      <a href='https://www.linkedin.com/company/basel-r-bootcamp/'>
+        <i class='fab fa-linkedin' style='font-size: .9em;'></i>
+      </a>
+      <a href='https://therbootcamp.github.io'>
+        <font style='font-style:normal'>The R Bootcamp</font>
+      </a>
+    </td>
+    <td style='width:100%;vertical-align:bottom;text-align:right;padding:0;margin:0;border:none'>
+      <img src='https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/by-sa.png' style='height:15px;width:80px'/>
+    </td>
+  </tr></table>"
+output:
+  html_document:
+    css: practical.css
+    self_contained: no
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(comment = NA, 
+                      fig.width = 6, 
+                      fig.height = 6,
+                      fig.align = 'center',
+                      echo = TRUE, 
+                      eval = TRUE, 
+                      warning = FALSE,
+                      message = FALSE)
+
+options(digits = 3)
+
+set.seed(100)
+```
+
+```{r, eval = TRUE, echo = FALSE}
+# Load datasets locally
+library(tidyverse)
+library(cstab)
+library(dbscan)
+library(mclust)
+gap = gapminder::gapminder %>% filter(country != 'Kuwait')
+
+```
+<p align="center">
+<img width="100%" src="image/gapminder_banner.png" margin=0><br>
+<font style="font-size:10px">from [gapminder.org](https://www.gapminder.org/data/)</font>
+</p>
+
+# {.tabset}
+
+## Overview
+
+In this practical, you will learn how to apply cluster analysis to two data sets.
+
+In the end, you will know how to:
+
+1. How to identify clusterings using different algorithms. 
+2. How to estimate the number of clusters for a given problem. 
+
+## Tasks
+
+### A - Setup
+
+1. Open your `TheRBootcamp` R project. 
+
+2. Open a new R script. Write your name, the date and "Unsupervised learning Practical" as comments at the top. 
+
+```{r, eval = FALSE, echo = TRUE}
+## NAME
+## DATUM
+## Unsupervised learning practical
+```
+
+3. Save the script as `Unsupervised_practical.R` in the `2_Code` folder.
+
+4. Load the packages `tidyverse`, `cstab`, `dbscan`, and `mclust`.
+
+### B - Load the `gap` data set
+
+1. Using `read_csv()`, read in `gap.csv` and save it as `gap`.
+
+```{r, echo = T}
+# Read gap.csv
+gap <- read_csv('1_Data/gap.csv')
+```
+
+2. Print the data set and inspect its contents. 
+
+3. Use `summary()` to get additional insight into the data.
+
+4. Use the code below to create a new data set containing only the data from year 2007 and features `Lebenserwartung` and `BIP pro Kopf`.
+
+```{r, echo = T}
+# gap in 2007
+gap2007 <- gap %>% 
+  filter(Jahr == 2007) %>% 
+  select(`BIP pro Kopf`, Lebenserwartung)
+```
+
+### C - *k*-means
+
+1. Using `kmeans()`, identify three clusters (`centers`) in `gap2007`. 
+
+```{r, echo = T, eval = F}
+# kmeans of gap in 2007
+gap2007_km <- kmeans(x = XX, centers = XX) 
+```
+
+```{r}
+# kmeans of gap in 2007
+gap2007_km <- kmeans(x = gap2007, centers = 3) 
+```
+
+2. Print `gap2007_km` and study the output.
+
+```{r}
+# kmeans of gap in 2007
+gap2007_km
+```
+
+3. The first row of the output and the table `Cluster means` shows how many objects were assigned to each of the three clusters and where the centroids (cluster means) of these are located.
+
+4. At the bottom of the output is a list of names of objects contained in the clustering object.  Use `gap2007_km$XX` to select the object `clusters`, as well as the elements `centers` and store them as `clusters` and `centers` respectively.
+
+```{r, echo = T, eval = F}
+# gap2007_km 
+clusters <- gap2007_km$XX
+centers <- gap2007_km$XX
+```
+
+```{r}
+# gap2007_km 
+clusters <- gap2007_km$cluster
+centers <- gap2007_km$centers
+```
+
+5. Use the code below to plot the data and cluster assignments. 
+
+```{r, echo = T}
+# kmeans of gap in 2007
+plot(gap2007, col = clusters)
+```
+
+6. Now use the code below to add the centroids. 
+
+```{r, echo = T}
+# kmeans of gap in 2007
+plot(gap2007, col = clusters)
+points(centers, pch = 16, col = 1:3, cex = 2)
+```
+
+7. Something's off, right? Some points of the middle cluster actually seem to lie closer to the bottom-left cluster. This shouldn't be the case. Any ideas how this has come about?
+
+8. The problem is that the features have different scales. The values of `BIP pro Kopf` are way larger than those in `Lebenserwartung` and, thus, a lot further away from each other. For that reason, `BIP pro Kopf` plays a much larger role for cluster assignments than `Lebenserwartung`. To fix this problem, run the code below, which scaled the features in `gap2007`. 
+
+```{r, echo = T}
+# scale gap in 2007
+gap2007_scaled <- gap2007 %>% 
+  scale() %>% 
+  as_tibble()
+```
+
+9. Now, run `kmeans()` for `gap2007_scaled` and plot the data and cluster assignments. All good now?
+
+```{r}
+# kmeans plot for gap in 2007 
+gap2007_scaled_km <- kmeans(x = gap2007_scaled, centers = 3) 
+
+# extract elements
+clusters <- gap2007_scaled_km$cluster
+centers <- gap2007_scaled_km$centers
+
+# plot
+plot(gap2007_scaled, col = clusters)
+points(centers, pch = 16, col = 1:3, cex = 2)
+```
+
+### D - *k*-selection
+
+1. It's time to estimate how many clusters there might be in the data. Use the code below to create a vector of within-cluster variances for `kmeans` solutions associated with 2 to 20 clusters. The code uses the `gap2007_scaled` data.
+
+```{r, echo = T}
+# within-cluster variance development
+km_development <- purrr::map(2:20, kmeans, x = gap2007_scaled)
+withinvar <- purrr::map_dbl(km_development, 
+                            `[[`, i = 'tot.withinss')
+```
+
+2. Using `plot()` create a plot of the development of the `withinvar`.
+
+```{r}
+# kmeans within-variance development
+plot(withinvar)
+```
+
+3. What does the plot tell you? Is there an elbow that would suggest a particular value of *k*?
+
+4. Several values of *k* seem plausible: 1, 3, or 7. Use `cDistance()` from the `cstab` package to estimate *k* with values from 2 to 20 (`2:20`) as candidates.
+
+```{r, echo = T, eval = F}
+# estimate k with cstab
+k_est <- cDistance(data = as.matrix(XX),
+                   kseq = XX:XX)
+```
+
+```{r}
+# estimate k with cstab
+k_est <- cDistance(data = as.matrix(gap2007_scaled),
+                   kseq = 2:20)
+```
+
+5. Extract `k_est$k_Gap` und `k_est$k_Slope`. Do the numbers seem reasonable?
+
+```{r}
+# estimate k with cstab
+k_est$k_Gap
+k_est$k_Slope
+```
+
+6. Now try `cStability()` and extract `k_instab`. Reasonable?
+
+```{r}
+# estimate k with cstab
+k_est <- cStability(data = as.matrix(gap2007_scaled),
+                   kseq = 2:20)
+k_est$k_instab
+```
+
+Remember: There is no true *k*.
+
+### E - DBSCAN
+
+1. Use `dbscan()` from the `dbscan` package to cluster the data. Again it is essential to work with `gap2007_scaled` as otherwise `eps` would describe an ellipse and not a circle. Set `eps` to `.5`. 
+
+```{r, echo = TRUE, eval = FALSE}
+# cluster using DBSCAN
+gap2007_scaled_dbscan <- dbscan(x = XX, 
+                                eps = XX)
+```
+
+```{r}
+# cluster using DBSCAN
+gap2007_scaled_dbscan <- dbscan(x = gap2007_scaled, 
+                                eps = .5)
+```
+
+2. Print `gap2007_scaled_dbscan`. What does the outpute tell you? Remember 0 means outlier. 
+
+3. A single cluster and 5 outliers were identified. Visualize the solution using the same approach as above. The `+ 1` is necessary as 0 implies no color. 
+
+```{r, echo = T, eval = F}
+# extract clusters
+clusters <- gap2007_scaled_dbscan$XX
+
+# plot
+plot(XX, col = XX + 1)
+```
+
+```{r}
+# extract clusters
+clusters <- gap2007_scaled_dbscan$cluster
+
+# plot
+plot(gap2007_scaled, col = clusters + 1)
+```
+
+4. Now run `dbscan()` again using different values for `eps`. Try `eps = .3` and `eps = .1`. Both times plot the results the same way as before. Any changes? Any of the solutions reasonable?
+
+```{r}
+# cluster using DBSCAN
+gap2007_scaled_dbscan.3 <- dbscan(x = gap2007_scaled, eps = .3)
+gap2007_scaled_dbscan.1 <- dbscan(x = gap2007_scaled, eps = .1)
+
+# plot
+par(mfrow = c(1, 3))
+plot(gap2007_scaled, col = gap2007_scaled_dbscan$cluster + 1)
+plot(gap2007_scaled, col = gap2007_scaled_dbscan.3$cluster + 1)
+plot(gap2007_scaled, col = gap2007_scaled_dbscan.1$cluster + 1)
+```
+
+5. `dbscan()` has additional parameters. `minPts` determines the number of points within `eps` necessary for a point to be a core point. If you like, try different values to explore the effect of `minPts`.
+
+### F - Gaussian Mixtures
+
+1. Finally, use `Mclust` from the `mclust` package to cluster the date using Gaussian mixtures. This time, you can work with the original data set `gap2007` as Gaussian mixtures are able to account for the differences in scale. 
+
+```{r, echo = TRUE, eval = FALSE}
+# Gaussian mixtures
+gap2007_gm <- Mclust(XX)
+```
+
+```{r, error=TRUE}
+# Gaussian mixtures
+gap2007_gm <- Mclust(gap2007)
+```
+
+2. Print the object `gap2007_gm`. What do you see?
+
+3. The output of `gap2007_gm` reveals very little. It only shows which objects it contains. Use `table(gap2007_gm$classification)` to gain an overview over the cluster assignments. How many clusters were identified and how many does each contain?
+
+4. Use the `classification` element to create a visualization of the cluster assignments. 
+
+```{r}
+# plot
+plot(gap2007_scaled, col = gap2007_gm$classification)
+```
+
+5. Now use ``plot(gap2007_gm, what = 'classification')` to create `mclust`'s own visualization.  
+
+```{r}
+# plot using mclust
+plot(gap2007_gm, what = 'classification')
+```
+
+6. Try to understand what the ellipses in the `mclust` plot reveal about the clusters. Remember they represent normal distributions with variances and co-variances reflecting the correlations between the features.  
+
+7. One desirable property of Gaussian mixtures is that they produce estimates of the uncertainty associated with assigning a data point to a particular cluster. Use  `plot(gap2007_gm, what = 'uncertainty')` to visualize this. The size of the points reflects the degree of uncertainty associated with a point being assigned to one particular cluster and not the others. 
+
+```{r}
+# plot
+plot(gap2007_gm, what = 'uncertainty')
+```
+
+### X - Challenges: Modellselection
+
+1. A further useful property of Gaussian mixtures is the existence of different implementations with different complexity. In fact, `Mclust()` already considers a variety of implementations in addition to different values of *k*. You can gain an overview on the performance of these using `plot(gap2007_gm, what = 'BIC')`.
+
+```{r}
+# plot
+plot(gap2007_gm, what = 'BIC')
+```
+
+BIC is the Bayesian Information Criterion and it characterizes the model fit in relation to model complexity. In this case, higher BIC values indicate better performance. In the visualization you see the performance of 14 different implementations as a function of different values *k* (x-axis). 
+
+2. Use `plot(gap2007_gm, what = 'BIC', ylim = c(-4200, -3900))` to get a better view on the critical region of the plot. Now you should be able to see that `EVV` for `k=4` shows the best performance overall.
+
+```{r}
+# plot
+plot(gap2007_gm, what = 'BIC', ylim = c(-4200, -3900))
+```
+
+3. Use `?mclustModelNames` to see descriptions for each of the model. This reveals that `EEV` only makes the simplifying assumption of equal volume between the different ellipsoids. This is also what you see in `plot(gap2007_gm, what = 'classification')`.  
+
+```{r}
+plot(gap2007_gm, what = 'classification')
+```
+
+4. Now explore using the code below what happens if you tell the model to use a specific implementation of Gaussian mixtures. Replace the 'XX' in `modelNames = 'XX'` with one of the three letter codes denoting the different models. Then visualize the result. Begin with `'EEI'`.
+
+```{r, echo = T, eval = F}
+# Try different implementation
+gap2007_gm <- Mclust(gap2007, modelNames = 'XX')
+plot(gap2007_gm, what = 'classification')
+```
+
+```{r}
+# Try different implementation
+gap2007_gm <- Mclust(gap2007, modelNames = 'EEI')
+plot(gap2007_gm, what = 'classification')
+```
+
+
+### Y - Challenges: New data set
+
+1. Use `read_csv()`to read in `credit.csv` as object `credit`.
+
+```{r, echo = T, eval = T, message = F}
+# Read credit.csv
+credit <- read_csv('1_Data/credit.csv')
+```
+
+2. Print the data set and familiarize yourself with its contents. 
+
+3. Use one or more of the clustering methods used above to identify clusters among credit card users. Have fun!
+
+## Examples
+
+```{r, eval = FALSE, echo = TRUE}
+library(tidyverse) 
+library(cstab)
+library(dbscan)
+library(mclust, mask.ok = F)
+
+# Example data
+data(mpg)
+
+# Process data
+mpg <- mpg %>% select_if(is.numeric)
+mpg_stand <- mpg  %>% 
+  scale %>%         # standardize/scale data
+  as_tibble()
+
+# k-means -----
+
+# Identify clusters
+mpg_km <- kmeans(mpg_stand, 
+                 centers = 3)
+
+# Show centroids
+mpg_km$centers
+
+# k-selection -----
+
+# Sow within-variance 
+km_development <- purrr::map(2:20, kmeans, x = mpg_stand)
+withinvar <- purrr::map_dbl(km_development, 
+                               `[[`, i = 'tot.withinss')
+
+# Visualize withinvar
+plot(withinvar)
+
+# Gap & Slope statistics
+k_est <- cDistance(as.matrix(mpg_stand), 
+                   kseq = 2:20) 
+k_est$k__Gap
+k_est$k_Slope
+
+# Cluster stability
+k_est <- cStability(as.matrix(mpg_stand), 
+                    kseq = 2:20) 
+k_est$k_instab
+  
+# DBSCAN -----
+
+# Identify clusters
+mpg_dbscan <- dbscan(mpg_stand, eps = 1)
+
+# Show centroids
+mpg %>% 
+  mutate(cl = mpg_dbscan$cluster) %>%
+  group_by(cl) %>% 
+  summarize_all(mean)
+
+# Gaussian Mixtures -----
+
+# Identify clusters
+mpg_gm <- Mclust(mpg)
+
+# Show centroids
+mpg %>% 
+  mutate(cl = mpg_gm$classification) %>%
+  group_by(cl) %>% 
+  summarize_all(mean)
+
+# Visualize clusters
+plot(mpg_gm, what = 'classification')
+
+# Compare clusters -----
+
+table(mpg_km$cluster, mpg_dbscan$cluster)
+table(mpg_km$cluster, mpg_gm$classification)
+table(mpg_dbscan$cluster, mpg_gm$classification)
+
+```
+
+
+## Data sets
+
+|File | Rows | Columns | 
+|:----|:-----|:------|
+|[gap.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/_sessions/Unsupervised/1_Data/gap.csv) | 1692 | 6 | 
+|[credit.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/_sessions/Unsupervised/1_Data/credit.csv) | 8636 | 8 | 
+
+#### gap.csv
+
+The `gap` data set is based on the [Gapminder](https://www.gapminder.org/) project and has been extracted from the R package [gapminder](https://cran.r-project.org/web/packages/gapminder/README.html).
+
+
+|Feature | Description |
+|:-------------|:-------------------------------------|
+|Land| Name of country  |
+|Kontinent| Name of continent |
+|Jahr| year |
+|Lebenserwartung| life expectancy in years |
+|Population| Anzahl Population of country |
+|BIP pro Kopf| GDP per capita |
+
+
+#### credit.csv
+
+The `credit` data set is an excerpt of the publicly available [*Credit Card Dataset*](https://www.kaggle.com/arjunbhasin2013/ccdata). The data set contains 8 features, that describe the behavior of 8636 credit card custmers.  
+
+|Variable | Beschreibung |
+|:-------------|:-------------------------------------|
+|BALANCE| Available credit  |
+|BALANCE_FREQUENCY| Frequency of balance changes of (1 = frequent, 0 = infrequent) |
+|PURCHASES| Sum of purchases |
+|CREDITLIMIT| Limit of credit card |
+|ONEOFFPURCHASES| Value of largest one-off purchase |
+|MINIMUM_PAYMENTS| Minimal credit card payment |
+|PRCFULLPAYMENT| Percent in-full credit card payments |
+|TENURE| Duration of credit card account  |
+
+
+## Functions
+
+### Package
+
+|Paket| Installation|
+|:------|:------|
+|`tidyverse`|`install.packages("tidyverse")`|
+|`cstab`|`install.packages("cstab")`|
+|`dbscan`|`install.packages("dbscan")`|
+|`mclust`|`install.packages("mclust")`|
+
+### Functions
+
+*Clustering*
+
+| Function | Package | Description |
+|:---|:------|:---------------------------------------------|
+| `kmeans()`|`stats`| Cluster data with *k*-means | 
+| `dbscan()`|`dbscan`| Cluster data with DBSCAN | 
+| `Mclust()`|`mclust`| Cluster data with Gaussian mixtures | 
+
+*k-selection*
+
+| Function | Package | Description |
+|:---|:------|:---------------------------------------------|
+| `cDistance()`|`cstab`| Identify *k* with distance-based methods, e.g., gap statistic.  | 
+| `cStability()`|`cstab`| Identify *k* with instability-based methods. | 
+
+
+## Resources
+
+### Documentation
+
+- A good [**Tutorial**](https://www.r-bloggers.com/the-complete-guide-to-clustering-analysis-k-means-and-hierarchical-clustering-by-hand-and-in-r/) on *k*-means and hierarchical clustering.
+

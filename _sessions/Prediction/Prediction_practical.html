@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Prediction</title>
+
+<script src="Prediction_practical_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="Prediction_practical_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="Prediction_practical_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="Prediction_practical_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="Prediction_practical_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="Prediction_practical_files/navigation-1.1/tabsets.js"></script>
+<link href="Prediction_practical_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="Prediction_practical_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="practical.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Prediction</h1>
+<h4 class="author"><table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0'>
+<col width='10%'>
+<col width='10%'>
+<tr style="border:none">
+<td style="display:block;width:100%;text-align:left;vertical-align:bottom;padding:0;margin:0;border:none" nowrap>
+<font style='font-style:normal'>Machine Learning with R</font><br> <a href='https://therbootcamp.github.io/ML-DHLab/'> <i class='fas fa-clock' style='font-size:.9em;' ></i> </a> <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;'></i> </a> <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a> <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a> <a href='https://therbootcamp.github.io'> <font style='font-style:normal'>The R Bootcamp</font> </a>
+</td>
+<td style="width:100%;vertical-align:bottom;text-align:right;padding:0;margin:0;border:none">
+<img src='https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/by-sa.png' style='height:15px;width:80px'/>
+</td>
+</tr>
+</table></h4>
+
+</div>
+
+
+<p align="center">
+<img width="100%" src="https://cdn-images-1.medium.com/max/1200/0*F0y1bmOEzCFCcPE_" margin=0><br> <font style="font-size:10px">from <a href="https://Medium.com/">Medium.com</a></font>
+</p>
+<div id="section" class="section level1 tabset">
+<h1></h1>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>By the end of this practical you will know how to:</p>
+<ol style="list-style-type: decimal">
+<li>Fit regression, decision trees and random forests to training data.</li>
+<li>Compare the fitting and prediction performance of two models for training and test data.</li>
+</ol>
+</div>
+<div id="tasks" class="section level2">
+<h2>Tasks</h2>
+<div id="a---setup" class="section level3">
+<h3>A - Setup</h3>
+<ol style="list-style-type: decimal">
+<li><p>Open your <code>TheRBootcamp</code> R project.</p></li>
+<li><p>Open a new R script. At the top of the script, using comments, write your name and the date.</p></li>
+</ol>
+<pre class="r"><code>## NAME
+## DATE
+## Prediction practical</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Save it as a new file called <code>Prediction_practical.R</code> in the <code>2_Code</code> folder.</p></li>
+<li><p>Using <code>library()</code> load the packages <code>tidyverse</code>, <code>caret</code>, <code>party</code>, <code>partykit</code>.</p></li>
+</ol>
+<pre class="r"><code># Load packages necessary for this script
+library(tidyverse)
+library(caret)
+library(party)
+library(partykit)</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Using <code>trainControl()</code>, create again the <code>ctrl_none</code> object with <code>method = "none"</code>.</li>
+</ol>
+<pre class="r"><code># Set training method to &quot;none&quot;
+ctrl_none &lt;- trainControl(method = &quot;XX&quot;)</code></pre>
+<pre class="r"><code># Set training method to &quot;none&quot;
+ctrl_none &lt;- trainControl(method = &quot;none&quot;)</code></pre>
+<br>
+<p style="font-size:20px;background-color:#6ABA9A;color:white;padding-left:20px" align="left" width="100%">
+Dataset 1: <b>College graduation</b>
+</p>
+</div>
+<div id="b---load-the-graduation-data" class="section level3">
+<h3>B - Load the <code>graduation</code> data</h3>
+<ol style="list-style-type: decimal">
+<li>Using <code>read_csv()</code>, read in the datasets <code>graduation_train.csv</code> and <code>graduation_test.csv</code>.</li>
+</ol>
+<pre class="r"><code># College data
+college_train &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)
+college_test &lt;- read_csv(file = &quot;1_Data/college_test.csv&quot;)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Print the data sets to make sure everything’s alright.</li>
+</ol>
+<pre class="r"><code># Print data sets to the console
+college_train</code></pre>
+<pre><code># A tibble: 500 x 18
+   Private  Apps Accept Enroll Top10perc Top25perc F.Undergrad P.Undergrad
+   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+ 1 Yes      1202   1054    326        18        44        1410         299
+ 2 No       1415    714    338        18        52        1345          44
+ 3 Yes      4778   2767    678        50        89        2587         120
+ 4 Yes      1220    974    481        28        67        1964         623
+ 5 Yes      1981   1541    514        18        36        1927        1084
+ 6 Yes      1217   1088    496        36        69        1773         884
+ 7 No       8579   5561   3681        25        50       17880        1673
+ 8 Yes       833    669    279         3        13        1224         345
+ 9 No      10706   7219   2397        12        37       14826        1979
+10 Yes       938    864    511        29        62        1715         103
+# … with 490 more rows, and 10 more variables: Outstate &lt;dbl&gt;,
+#   Room.Board &lt;dbl&gt;, Books &lt;dbl&gt;, Personal &lt;dbl&gt;, PhD &lt;dbl&gt;, Terminal &lt;dbl&gt;,
+#   S.F.Ratio &lt;dbl&gt;, perc.alumni &lt;dbl&gt;, Expend &lt;dbl&gt;, Grad.Rate &lt;dbl&gt;</code></pre>
+<pre class="r"><code>college_test</code></pre>
+<pre><code># A tibble: 277 x 18
+   Private  Apps Accept Enroll Top10perc Top25perc F.Undergrad P.Undergrad
+   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+ 1 No       9251   7333   3076        14        45       13699        1213
+ 2 Yes      1480   1257    452         6        25        2961         572
+ 3 No       2336   1725   1043        10        27        5438        4058
+ 4 Yes      1262   1102    276        14        40         978          98
+ 5 Yes       959    771    351        23        48        1662         209
+ 6 Yes       331    331    225        15        36        1100         166
+ 7 Yes       804    632    281        29        72         840          68
+ 8 No        285    280    208        21        43        1140         473
+ 9 Yes       323    278    122        31        51         393           4
+10 Yes       504    482    185        10        36         550          84
+# … with 267 more rows, and 10 more variables: Outstate &lt;dbl&gt;,
+#   Room.Board &lt;dbl&gt;, Books &lt;dbl&gt;, Personal &lt;dbl&gt;, PhD &lt;dbl&gt;, Terminal &lt;dbl&gt;,
+#   S.F.Ratio &lt;dbl&gt;, perc.alumni &lt;dbl&gt;, Expend &lt;dbl&gt;, Grad.Rate &lt;dbl&gt;</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Convert all character columns to factors in both training and test data using the code below.</li>
+</ol>
+<pre class="r"><code># Convert all character features to factor
+college_train &lt;- college_train %&gt;%
+          mutate_if(is.character, factor)
+college_test &lt;- college_test %&gt;%
+          mutate_if(is.character, factor)</code></pre>
+<div id="c---fitting" class="section level4">
+<h4>C - Fitting</h4>
+</div>
+<div id="regression" class="section level4">
+<h4>Regression</h4>
+<ol style="list-style-type: decimal">
+<li>Using <code>train()</code> fit a regression model called <code>graduation_glm</code> predicting <code>Grad.Rate</code>by all features. Specifically:</li>
+</ol>
+<ul>
+<li>for the <code>form</code> argument, use <code>Grad.Rate ~ .</code>.</li>
+<li>for the <code>data</code> argument, use <code>college_train</code> in the data argument.</li>
+<li>for the <code>method</code> argument, use <code>method = "glm"</code> for regression.</li>
+<li>for the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created above.</li>
+</ul>
+<pre class="r"><code># fit regression
+graduation_glm &lt;- train(form = XX ~ .,
+                        data = XX,
+                        method = &quot;XX&quot;,
+                        trControl = ctrl_none)</code></pre>
+<pre class="r"><code>graduation_glm &lt;- train(form = Grad.Rate ~ .,
+                        data = college_train,
+                        method = &quot;glm&quot;,
+                        trControl = ctrl_none)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Explore your <code>graduation_glm</code> object by looking at <code>graduation_glm$finalModel</code> and using <code>summary()</code>. What does the output tell you?</li>
+</ol>
+<pre class="r"><code># show model
+graduation_glm$XX
+summary(XX)</code></pre>
+<pre class="r"><code>graduation_glm$finalModel</code></pre>
+<pre><code>
+Call:  NULL
+
+Coefficients:
+(Intercept)   PrivateYes         Apps       Accept       Enroll    Top10perc  
+  26.320597     2.075873     0.001243    -0.000965     0.006891    -0.100378  
+  Top25perc  F.Undergrad  P.Undergrad     Outstate   Room.Board        Books  
+   0.289288    -0.001247    -0.001296     0.001436     0.001294    -0.000276  
+   Personal          PhD     Terminal    S.F.Ratio  perc.alumni       Expend  
+  -0.001756     0.060658    -0.066585     0.330961     0.195720    -0.000369  
+
+Degrees of Freedom: 499 Total (i.e. Null);  482 Residual
+Null Deviance:      189000 
+Residual Deviance: 121000   AIC: 4200</code></pre>
+<pre class="r"><code>summary(graduation_glm)</code></pre>
+<pre><code>
+Call:
+NULL
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-49.27  -10.69    0.25   10.41   49.36  
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 26.320597   7.282672    3.61  0.00033 ***
+PrivateYes   2.075873   2.477211    0.84  0.40245    
+Apps         0.001243   0.000722    1.72  0.08554 .  
+Accept      -0.000965   0.001339   -0.72  0.47151    
+Enroll       0.006891   0.003663    1.88  0.06056 .  
+Top10perc   -0.100378   0.110002   -0.91  0.36196    
+Top25perc    0.289288   0.085752    3.37  0.00080 ***
+F.Undergrad -0.001247   0.000584   -2.13  0.03328 *  
+P.Undergrad -0.001296   0.000565   -2.29  0.02224 *  
+Outstate     0.001436   0.000383    3.75  0.00020 ***
+Room.Board   0.001294   0.000917    1.41  0.15922    
+Books       -0.000276   0.005208   -0.05  0.95781    
+Personal    -0.001756   0.001270   -1.38  0.16731    
+PhD          0.060658   0.090671    0.67  0.50382    
+Terminal    -0.066585   0.096828   -0.69  0.49200    
+S.F.Ratio    0.330961   0.241530    1.37  0.17124    
+perc.alumni  0.195720   0.078634    2.49  0.01315 *  
+Expend      -0.000369   0.000257   -1.44  0.15098    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for gaussian family taken to be 251)
+
+    Null deviance: 188828  on 499  degrees of freedom
+Residual deviance: 121047  on 482  degrees of freedom
+AIC: 4202
+
+Number of Fisher Scoring iterations: 2</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Using <code>predict()</code> save the fitted values of <code>graduation_glm</code> object as <code>glm_fit</code>.</li>
+</ol>
+<pre class="r"><code># Save fitted values of regression model
+glm_fit &lt;- predict(XX)</code></pre>
+<pre class="r"><code>glm_fit &lt;- predict(graduation_glm)</code></pre>
+</div>
+<div id="decision-trees" class="section level4">
+<h4>Decision Trees</h4>
+<ol start="4" style="list-style-type: decimal">
+<li>Using <code>train()</code>, fit a decision tree model called <code>graduation_rpart</code> predicting <code>Grad.Rate</code>by all features. Specifically:</li>
+</ol>
+<ul>
+<li>for the <code>form</code> argument, use <code>Grad.Rate ~ .</code>.</li>
+<li>for the <code>data</code> argument, use <code>college_train</code>.</li>
+<li>for the <code>method</code> argument, use <code>method = "rpart"</code> to create decision trees.</li>
+<li>for the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before.</li>
+</ul>
+<pre class="r"><code># fit decision tree
+graduation_rpart &lt;- train(form = XX ~ .,
+                          data = XX,
+                          method = &quot;XX&quot;,
+                          trControl = XX)  </code></pre>
+<pre class="r"><code># fit decision tree
+graduation_rpart &lt;- train(form = Grad.Rate ~ .,
+                          data = college_train,
+                          method = &quot;rpart&quot;,
+                          trControl = ctrl_none) </code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Explore your <code>graduation_rpart</code> object by looking at <code>graduation_rpart$finalModel</code> and plotting it with <code>plot(as.party(graduation_rpart$finalModel))</code>. What do you make of the output?</li>
+</ol>
+<pre class="r"><code>graduation_rpart$finalModel</code></pre>
+<pre><code>n= 500 
+
+node), split, n, deviance, yval
+      * denotes terminal node
+
+1) root 500 189000 65.4 *</code></pre>
+<pre class="r"><code>plot(as.party(graduation_rpart$finalModel))</code></pre>
+<p><img src="Prediction_practical_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;" /></p>
+<ol start="6" style="list-style-type: decimal">
+<li>Using <code>predict()</code>, save the fitted values of <code>graduation_rpart</code> object as <code>rpart_fit</code>.</li>
+</ol>
+<pre class="r"><code># Save fitted values of decision tree model
+rpart_fit &lt;- predict(XX)</code></pre>
+<pre class="r"><code>rpart_fit &lt;- predict(graduation_rpart)</code></pre>
+</div>
+<div id="random-forests" class="section level4">
+<h4>Random Forests</h4>
+<ol start="7" style="list-style-type: decimal">
+<li>Using <code>train()</code>, fit a random forest model called <code>graduation_rf</code> predicting <code>Grad.Rate</code>by all features. Specifically:</li>
+</ol>
+<ul>
+<li>for the <code>form</code> argument, use <code>Grad.Rate ~ .</code>.</li>
+<li>for the <code>data</code> argument, use <code>college_train</code>.</li>
+<li>for the <code>method</code> argument, use <code>method = "rf"</code> to fit random forests.</li>
+<li>for the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before.</li>
+</ul>
+<pre class="r"><code># fit random forest
+graduation_rf &lt;- train(form = XX ~ .,   
+                 data = XX,
+                 method = &quot;XX&quot;,
+                 trControl = XX)</code></pre>
+<pre class="r"><code># fit random forest
+graduation_rf &lt;- train(form = Grad.Rate ~ ., 
+                 data = college_train,
+                 method = &quot;rf&quot;,
+                 trControl = ctrl_none)</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Using <code>predict()</code>, save the fitted values of <code>graduation_rf</code> as <code>rf_fit</code>.</li>
+</ol>
+<pre class="r"><code># Save fitted values of random forest model
+rf_fit &lt;- predict(XX)</code></pre>
+<pre class="r"><code>rf_fit &lt;- predict(graduation_rf)</code></pre>
+</div>
+<div id="assess-fitting-accuracy" class="section level4">
+<h4>Assess fitting accuracy</h4>
+<ol start="9" style="list-style-type: decimal">
+<li>Save the true training criterion (<code>Grad.Rate</code>) in an object called <code>criterion_train</code>.</li>
+</ol>
+<pre class="r"><code># Store training criterion
+criterion_train &lt;- XX$XX</code></pre>
+<pre class="r"><code># Store training criterion
+criterion_train &lt;- college_train$Grad.Rate</code></pre>
+<ol start="10" style="list-style-type: decimal">
+<li>Using <code>postResample()</code>, determine the fitting performance of each of your models separately. Make sure to set your <code>criterion_train</code> values to the <code>obs</code> argument, and your true model fits <code>XX_fit</code> to the <code>pred</code> argument.</li>
+</ol>
+<pre class="r"><code># Regression accuracy
+postResample(pred = XX, obs = XX)
+
+# Decision tree accuracy
+postResample(pred = XX, obs = XX)
+
+# Random forest accuracy
+postResample(pred = XX, obs = XX)</code></pre>
+<pre class="r"><code># Regression accuracy
+postResample(pred = glm_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  15.559    0.359   12.443 </code></pre>
+<pre class="r"><code># Decision tree accuracy
+postResample(pred = rpart_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+    19.4       NA     16.0 </code></pre>
+<pre class="r"><code># Random forest accuracy
+postResample(pred = rf_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+   6.959    0.925    5.513 </code></pre>
+<ol start="11" style="list-style-type: decimal">
+<li>What do you make of these results? Which model had the best fit?</li>
+</ol>
+</div>
+</div>
+<div id="d---prediction" class="section level3">
+<h3>D - Prediction</h3>
+<ol style="list-style-type: decimal">
+<li>Save the criterion values from the test data set as a new object called <code>criterion_test</code>.</li>
+</ol>
+<pre class="r"><code># Store test criterion
+criterion_test &lt;- XX$XX</code></pre>
+<pre class="r"><code># Store test criterion
+criterion_test &lt;- college_test$Grad.Rate</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Using <code>predict()</code>, calculate the predicted values of each model for the test data <code>college_test</code> as <code>glm_pred</code>, <code>rpart_pred</code> and <code>rf_pred</code>.</li>
+</ol>
+<pre class="r"><code># Regression predicted values
+glm_pred &lt;- predict(XX, newdata = XX)
+
+# Decision trees predicted values
+rpart_pred &lt;- predict(XX, newdata = XX)
+
+# Random forests predicted values
+rf_pred &lt;- predict(XX, newdata = XX)</code></pre>
+<pre class="r"><code># Regression predicted values
+glm_pred &lt;- predict(graduation_glm, newdata = college_test)
+
+# Decision trees predicted values
+rpart_pred &lt;- predict(graduation_rpart, newdata = college_test)
+
+# Random forests predicted values
+rf_pred &lt;- predict(graduation_rf, newdata = college_test)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Using <code>postResample()</code>, determine the prediction performance of each of your models for the test criterion <code>criterion_test</code>.</li>
+</ol>
+<pre class="r"><code># Regression prediction performance
+postResample(pred = XX, obs = XX)
+
+# Decision trees prediction performance
+postResample(pred = XX, obs = XX)
+
+# Random forests prediction performance
+postResample(pred = XX, obs = XX)</code></pre>
+<pre class="r"><code># Regression prediction performance
+postResample(pred = glm_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  16.412    0.305   13.204 </code></pre>
+<pre class="r"><code># Decision trees prediction performance
+postResample(pred = rpart_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+    19.6       NA     16.4 </code></pre>
+<pre class="r"><code># Random forests prediction performance
+postResample(pred = rf_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  15.807    0.361   12.798 </code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>How does each model’s prediction performance compare to its fitting performance? Is it worse? Better? The same? What does the change tell you about the models?</li>
+</ol>
+<pre class="r"><code># The regression goodness of fit stayed the most constant. The random forest one droped considerably.</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Which of the three models has the best prediction performance?</li>
+</ol>
+<pre class="r"><code># The random forest predictions are still the most accurate.</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>If you had to use one of these three models in the real-world, which one would it be?</li>
+</ol>
+<br>
+<p style="font-size:20px;background-color:#6ABA9A;color:white;padding-left:20px" align="left" width="100%">
+Dataset 2: <b>House sales</b>
+</p>
+</div>
+<div id="e---load-the-house-data" class="section level3">
+<h3>E - Load the <code>house</code> data</h3>
+<ol style="list-style-type: decimal">
+<li>Create a section in your script by copying the template below.</li>
+</ol>
+<pre class="r"><code># House prices ------------------------------------------------------------</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>In this section you will analyze house sales data from King County, Washington. Run the code below to load the <code>house_train</code> and <code>house_test</code> datasets.</li>
+</ol>
+<pre class="r"><code># house data
+house_train &lt;- read_csv(file = &quot;1_Data/house_train.csv&quot;)
+house_test &lt;- read_csv(file = &quot;1_Data/house_test.csv&quot;)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Print the datasets to the console to get an idea of their contents.</li>
+</ol>
+<pre class="r"><code># Print dataframes to the console
+house_train</code></pre>
+<pre><code># A tibble: 5,000 x 19
+    price bedrooms bathrooms sqft_living sqft_lot floors waterfront  view
+    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;
+ 1 176000        2      1            770     5200    1            0     0
+ 2 370000        2      1            850     6213    1            0     0
+ 3 875909        4      2.5         3610    13292    2            0     0
+ 4 100000        2      1            770    17334    1            0     0
+ 5 580000        3      1.75        1850     2797    1            0     0
+ 6 577000        5      2.75        1940     5000    2            0     0
+ 7 665000        4      2.5         2600    17388    2            0     0
+ 8 425000        3      1.5         1970    13709    1            0     0
+ 9 225000        3      1            660     6600    1            0     0
+10 660000        5      2.25        2540     3750    1.5          0     0
+# … with 4,990 more rows, and 11 more variables: condition &lt;dbl&gt;, grade &lt;dbl&gt;,
+#   sqft_above &lt;dbl&gt;, sqft_basement &lt;dbl&gt;, yr_built &lt;dbl&gt;, yr_renovated &lt;dbl&gt;,
+#   zipcode &lt;dbl&gt;, lat &lt;dbl&gt;, long &lt;dbl&gt;, sqft_living15 &lt;dbl&gt;, sqft_lot15 &lt;dbl&gt;</code></pre>
+<pre class="r"><code>house_test</code></pre>
+<pre><code># A tibble: 1,000 x 19
+    price bedrooms bathrooms sqft_living sqft_lot floors waterfront  view
+    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;
+ 1 4.95e5        3      1.75        1890     6557      1          0     0
+ 2 5.90e5        3      3.5         1970     5079      2          0     0
+ 3 5.25e5        3      2.25        2100    40510      2          0     0
+ 4 3.75e5        3      1           1520    10798      1          0     0
+ 5 2.45e5        4      2.25        2050     7700      2          0     0
+ 6 1.12e6        3      2.5         4530    22873      2          0     2
+ 7 4.00e5        2      2.5         1340     1240      2          0     0
+ 8 5.33e5        4      2.75        2790     6685      2          0     0
+ 9 7.45e5        4      2.5         3170     5100      2          0     0
+10 3.40e5        2      1            800     3090      1          0     0
+# … with 990 more rows, and 11 more variables: condition &lt;dbl&gt;, grade &lt;dbl&gt;,
+#   sqft_above &lt;dbl&gt;, sqft_basement &lt;dbl&gt;, yr_built &lt;dbl&gt;, yr_renovated &lt;dbl&gt;,
+#   zipcode &lt;dbl&gt;, lat &lt;dbl&gt;, long &lt;dbl&gt;, sqft_living15 &lt;dbl&gt;, sqft_lot15 &lt;dbl&gt;</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Again, a little bit of data cleaning. Convert all character features to factor.</li>
+</ol>
+<pre class="r"><code># Convert all character to factor
+house_train &lt;- house_train %&gt;%
+          mutate_if(is.character, factor)
+house_test &lt;- house_test %&gt;%
+          mutate_if(is.character, factor)</code></pre>
+</div>
+<div id="f---fitting" class="section level3">
+<h3>F - Fitting</h3>
+<div id="regression-1" class="section level4">
+<h4>Regression</h4>
+<ol style="list-style-type: decimal">
+<li>Using <code>train()</code>, fit a regression model called <code>price_glm</code> predicting the house sale price (<code>price</code>) using all features in <code>house_train</code>. Specifically:</li>
+</ol>
+<ul>
+<li>for the <code>form</code> argument, use <code>price ~ .</code>.</li>
+<li>for the <code>data</code> argument, use <code>house_train</code>.</li>
+<li>for the <code>method</code> argument, use <code>method = "glm"</code> for regression.</li>
+<li>for the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created in the beginning.</li>
+</ul>
+<pre class="r"><code># fit regression
+price_glm &lt;- train(form = price ~ .,
+                   data = house_train,
+                   method = &quot;glm&quot;,
+                   trControl = ctrl_none)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Explore your <code>price_glm</code> object by looking at <code>price_glm$finalModel</code> and using <code>summary()</code>. What do you find?</li>
+</ol>
+<pre class="r"><code>price_glm$finalModel</code></pre>
+<pre><code>
+Call:  NULL
+
+Coefficients:
+  (Intercept)       bedrooms      bathrooms    sqft_living       sqft_lot  
+     1.07e+05      -4.64e+04       5.35e+04       1.47e+02       2.31e-01  
+       floors     waterfront           view      condition          grade  
+     5.03e+03       6.40e+05       5.84e+04       3.03e+04       9.74e+04  
+   sqft_above  sqft_basement       yr_built   yr_renovated        zipcode  
+     2.40e+01             NA      -2.61e+03       4.31e+00      -5.42e+02  
+          lat           long  sqft_living15     sqft_lot15  
+     6.14e+05      -2.32e+05       2.71e+01      -2.63e-01  
+
+Degrees of Freedom: 4999 Total (i.e. Null);  4982 Residual
+Null Deviance:      6.81e+14 
+Residual Deviance: 2.02e+14     AIC: 136000</code></pre>
+<pre class="r"><code>summary(price_glm)</code></pre>
+<pre><code>
+Call:
+NULL
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-1114590    -98269    -10834     76308   4063119  
+
+Coefficients: (1 not defined because of singularities)
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    1.07e+05   6.13e+06    0.02  0.98603    
+bedrooms      -4.64e+04   4.14e+03  -11.19  &lt; 2e-16 ***
+bathrooms      5.35e+04   7.00e+03    7.65  2.4e-14 ***
+sqft_living    1.47e+02   9.33e+00   15.73  &lt; 2e-16 ***
+sqft_lot       2.31e-01   1.02e-01    2.26  0.02360 *  
+floors         5.03e+03   7.62e+03    0.66  0.50982    
+waterfront     6.40e+05   3.53e+04   18.14  &lt; 2e-16 ***
+view           5.84e+04   4.52e+03   12.94  &lt; 2e-16 ***
+condition      3.03e+04   4.82e+03    6.28  3.6e-10 ***
+grade          9.74e+04   4.43e+03   21.99  &lt; 2e-16 ***
+sqft_above     2.40e+01   9.25e+00    2.60  0.00935 ** 
+sqft_basement        NA         NA      NA       NA    
+yr_built      -2.61e+03   1.54e+02  -16.92  &lt; 2e-16 ***
+yr_renovated   4.31e+00   7.99e+00    0.54  0.58986    
+zipcode       -5.42e+02   6.84e+01   -7.92  3.0e-15 ***
+lat            6.14e+05   2.25e+04   27.28  &lt; 2e-16 ***
+long          -2.32e+05   2.71e+04   -8.55  &lt; 2e-16 ***
+sqft_living15  2.71e+01   7.12e+00    3.81  0.00014 ***
+sqft_lot15    -2.63e-01   1.60e-01   -1.64  0.10008    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for gaussian family taken to be 4.06e+10)
+
+    Null deviance: 6.8104e+14  on 4999  degrees of freedom
+Residual deviance: 2.0203e+14  on 4982  degrees of freedom
+AIC: 136339
+
+Number of Fisher Scoring iterations: 2</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Using <code>predict()</code>, save the fitted values of <code>price_glm</code> object as <code>glm_fit</code>.</li>
+</ol>
+<pre class="r"><code># Store fitted values
+glm_fit &lt;- predict(price_glm)</code></pre>
+</div>
+<div id="decision-tree" class="section level4">
+<h4>Decision tree</h4>
+<ol start="4" style="list-style-type: decimal">
+<li>Using <code>train()</code>, fit a decision tree model called <code>price_rpart</code> predicting <code>price</code> using all features in <code>house_train</code>. Specifically:</li>
+</ol>
+<ul>
+<li>for the <code>form</code> argument, use <code>price ~ .</code>.</li>
+<li>for the <code>data</code> argument, use <code>house_train</code>.</li>
+<li>for the <code>method</code> argument, use <code>method = "rpart"</code> to create decision trees.</li>
+<li>for the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before.</li>
+</ul>
+<pre class="r"><code># fit decision tree
+price_rpart &lt;- train(form = price ~ .,
+                     data = house_train,
+                     method = &quot;rpart&quot;,
+                     trControl = ctrl_none) </code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Explore your <code>price_rpart</code> object by looking at <code>price_rpart$finalModel</code> and plotting it with <code>plot(as.party(price_rpart$finalModel))</code>. What do you find?</li>
+</ol>
+<pre class="r"><code>price_rpart$finalModel</code></pre>
+<pre><code>n= 5000 
+
+node), split, n, deviance, yval
+      * denotes terminal node
+
+1) root 5000 6.81e+14 537000 *</code></pre>
+<pre class="r"><code>plot(as.party(price_rpart$finalModel))</code></pre>
+<p><img src="Prediction_practical_files/figure-html/unnamed-chunk-43-1.png" width="576" style="display: block; margin: auto;" /></p>
+<ol start="6" style="list-style-type: decimal">
+<li>Using <code>predict()</code> save the fitted values of <code>price_rpart</code> object as <code>rpart_fit</code>.</li>
+</ol>
+<pre class="r"><code># Store fitted values
+rpart_fit &lt;- predict(price_rpart)</code></pre>
+</div>
+<div id="random-forests-1" class="section level4">
+<h4>Random Forests</h4>
+<ol start="7" style="list-style-type: decimal">
+<li>Using <code>train()</code>, fit a random forest model called <code>price_rf</code> predicting <code>price</code> using all features in <code>house_train</code>. Specifically:</li>
+</ol>
+<ul>
+<li>for the <code>form</code> argument, use <code>price ~ .</code>.</li>
+<li>for the <code>data</code> argument, use <code>house_train</code> in the data argument.</li>
+<li>for the <code>method</code> argument, use <code>method = "rf"</code> to fit random forests.</li>
+<li>for the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before.</li>
+</ul>
+<pre class="r"><code>price_rf &lt;- train(form = price ~ .,
+                 data = house_train,
+                 method = &quot;rf&quot;,
+                 trControl = ctrl_none)</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Using <code>predict()</code> save the fitted values of <code>price_rf</code> object as <code>rf_fit</code>.</li>
+</ol>
+<pre class="r"><code># store fitted values
+rf_fit &lt;- predict(price_rf)</code></pre>
+</div>
+<div id="assess-accuracy" class="section level4">
+<h4>Assess accuracy</h4>
+<ol start="9" style="list-style-type: decimal">
+<li>Save the true training criterion values as a vector called <code>criterion_train</code>.</li>
+</ol>
+<pre class="r"><code># store criterion
+criterion_train &lt;- house_train$price</code></pre>
+<ol start="10" style="list-style-type: decimal">
+<li>Using <code>postResample()</code>, determine the fitting performance of each of your models separately.</li>
+</ol>
+<pre class="r"><code># Regression
+postResample(pred = glm_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+2.01e+05 7.03e-01 1.25e+05 </code></pre>
+<pre class="r"><code># Decision Trees
+postResample(pred = rpart_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  369063       NA   232500 </code></pre>
+<pre class="r"><code># Random Forests
+postResample(pred = rf_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+6.59e+04 9.75e-01 3.40e+04 </code></pre>
+<ol start="11" style="list-style-type: decimal">
+<li>Which model had the best fit? Same model as for the graduation data?</li>
+</ol>
+</div>
+</div>
+<div id="g---prediction" class="section level3">
+<h3>G - Prediction</h3>
+<ol style="list-style-type: decimal">
+<li>Save the criterion values from the test data set as a new vector called <code>criterion_test</code>.</li>
+</ol>
+<pre class="r"><code># store criterion of test data
+criterion_test &lt;- house_test$price</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Using <code>predict()</code>, save the predicted values of each model for the test data as <code>glm_pred</code>, <code>rpart_pred</code> and <code>rf_pred</code>.</li>
+</ol>
+<pre class="r"><code># Regression
+glm_pred &lt;- predict(price_glm, 
+                    newdata = house_test)
+
+# Decision Trees
+rpart_pred &lt;- predict(price_rpart, 
+                      newdata = house_test)
+
+# Random Forests
+rf_pred &lt;- predict(price_rf, 
+                   newdata = house_test)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Using <code>postResample()</code>, determine the prediction performance of each of your models.</li>
+</ol>
+<pre class="r"><code># Regression
+postResample(pred = glm_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+1.92e+05 7.03e-01 1.26e+05 </code></pre>
+<pre class="r"><code># Decision Trees
+postResample(pred = rpart_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  351741       NA   224747 </code></pre>
+<pre class="r"><code># Random Forests
+postResample(pred = rf_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+1.27e+05 8.77e-01 7.49e+04 </code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li><p>How does each model’s prediction performance compare to its fitting performance? Is it worse? Better? The same? What does the change tell you about the models?</p></li>
+<li><p>Which of the three models has the best prediction performance?</p></li>
+<li><p>Contemplate, if you had to use one of these three models in the real-world, which one would it be? Any different</p></li>
+</ol>
+</div>
+<div id="x---challenges" class="section level3">
+<h3>X - Challenges:</h3>
+<ol style="list-style-type: decimal">
+<li>For either dataset try to find feature sets that lead to the best possible prediction performance.</li>
+</ol>
+</div>
+</div>
+<div id="examples" class="section level2">
+<h2>Examples</h2>
+<pre class="r"><code># Fitting and evaluating regression, decision trees, and random forests
+
+# Step 0: Load packages-----------
+library(tidyverse)    # Load tidyverse for dplyr and tidyr
+library(caret)        # For ML mastery 
+library(partykit)     # For decision trees
+library(party)        # For decision trees
+
+# Step 1: Load and Clean, and Explore Training data ----------------------
+
+# training data
+data_train &lt;- read_csv(&quot;1_Data/mpg_train.csv&quot;)
+
+# test data
+data_test &lt;- read_csv(&quot;1_Data/mpg_test.csv&quot;)
+
+# Convert all characters to factor
+#  Some ML models require factors
+data_train &lt;- data_train %&gt;%
+  mutate_if(is.character, factor)
+
+data_test &lt;- data_test %&gt;%
+  mutate_if(is.character, factor)
+
+# Explore training data
+data_train        # Print the dataset
+View(data_train)  # Open in a new spreadsheet-like window 
+dim(data_train)   # Print dimensions
+names(data_train) # Print the names
+
+# Define criterion_train
+#   We&#39;ll use this later to evaluate model accuracy
+criterion_train &lt;- data_train$hwy
+
+# Step 2: Define training control parameters -------------
+
+# In this case, I will set method = &quot;none&quot; to fit to 
+#  the entire dataset without any fancy methods
+ctrl_none &lt;- trainControl(method = &quot;none&quot;) 
+
+# Step 3: Train model: -----------------------------
+#   Criterion: hwy
+#   Features: year, cyl, displ
+
+# Regression --------------------------
+hwy_glm &lt;- train(form = hwy ~ year + cyl + displ,
+                 data = data_train,
+                 method = &quot;glm&quot;,
+                 trControl = ctrl_none)
+
+# Look at summary information
+hwy_glm$finalModel
+summary(hwy_glm)
+
+# Save fitted values
+glm_fit &lt;- predict(hwy_glm)
+
+#  Calculate fitting accuracies
+postResample(pred = glm_fit, 
+             obs = criterion_train)
+
+# Decision Trees ----------------
+hwy_rpart &lt;- train(form = hwy ~ year + cyl + displ,
+                data = data_train,
+                method = &quot;rpart&quot;,
+                trControl = ctrl_none)
+
+# Look at summary information
+hwy_rpart$finalModel
+plot(as.party(hwy_rpart$finalModel))   # Visualise your trees
+
+# Save fitted values
+rpart_fit &lt;- predict(hwy_rpart)
+
+# Calculate fitting accuracies
+postResample(pred = rpart_fit, obs = criterion_train)
+
+# Random Forests -------------------------
+hwy_rf &lt;- train(form = hwy ~ year + cyl + displ,
+                data = data_train,
+                method = &quot;rf&quot;,
+                trControl = ctrl_none)   
+
+# Look at summary information
+hwy_rf$finalModel
+
+# Save fitted values
+rf_fit &lt;- predict(hwy_rf)
+
+# Calculate fitting accuracies
+postResample(pred = rf_fit, obs = criterion_train)
+
+# Visualise Accuracy -------------------------
+
+# Tidy competition results
+accuracy &lt;- tibble(criterion_train = criterion_train,
+                   Regression = glm_fit,
+                   DecisionTrees = rpart_fit,
+                   RandomForest = rf_fit) %&gt;%
+               gather(model, prediction, -criterion_train) %&gt;%
+               # Add error measures
+               mutate(se = prediction - criterion_train,
+                      ae = abs(prediction - criterion_train))
+
+# Calculate summaries
+accuracy_agg &lt;- accuracy %&gt;%
+                  group_by(model) %&gt;%
+                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+
+# Plot A) Scatterplot of truth versus predictions
+ggplot(data = accuracy,
+       aes(x = criterion_train, y = prediction, col = model)) +
+  geom_point(alpha = .5) +
+  geom_abline(slope = 1, intercept = 0) +
+  labs(title = &quot;Predicting mpg$hwy&quot;,
+       subtitle = &quot;Black line indicates perfect performance&quot;)
+
+# Plot B) Violin plot of absolute errors
+ggplot(data = accuracy, 
+       aes(x = model, y = ae, fill = model)) + 
+  geom_violin() + 
+  geom_jitter(width = .05, alpha = .2) +
+  labs(title = &quot;Fitting Absolute Errors&quot;,
+       subtitle = &quot;Numbers indicate means&quot;,
+       x = &quot;Model&quot;,
+       y = &quot;Absolute Error&quot;) +
+  guides(fill = FALSE) +
+  annotate(geom = &quot;label&quot;, 
+           x = accuracy_agg$model, 
+           y = accuracy_agg$mae, 
+           label = round(accuracy_agg$mae, 2))
+
+# Step 5: Access prediction ------------------------------
+
+# Define criterion_train
+criterion_test &lt;- data_test$hwy
+
+# Save predicted values
+glm_pred &lt;- predict(hwy_glm, newdata = data_test)
+rpart_pred &lt;- predict(hwy_rpart, newdata = data_test)
+rf_pred &lt;- predict(hwy_rf, newdata = data_test)
+
+#  Calculate fitting accuracies
+postResample(pred = glm_pred, obs = criterion_test)
+postResample(pred = rpart_pred, obs = criterion_test)
+postResample(pred = rf_pred, obs = criterion_test)
+
+# Visualise Accuracy -------------------------
+
+# Tidy competition results
+accuracy &lt;- tibble(criterion_test = criterion_test,
+                   Regression = glm_pred,
+                   DecisionTrees = rpart_pred,
+                   RandomForest = rf_pred) %&gt;%
+               gather(model, prediction, -criterion_test) %&gt;%
+               # Add error measures
+               mutate(se = prediction - criterion_test,
+                      ae = abs(prediction - criterion_test))
+
+# Calculate summaries
+accuracy_agg &lt;- accuracy %&gt;%
+                  group_by(model) %&gt;%
+                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+
+# Plot A) Scatterplot of truth versus predictions
+ggplot(data = accuracy,
+       aes(x = criterion_test, y = prediction, col = model)) +
+  geom_point(alpha = .5) +
+  geom_abline(slope = 1, intercept = 0) +
+  labs(title = &quot;Predicting mpg$hwy&quot;,
+       subtitle = &quot;Black line indicates perfect performance&quot;)
+
+# Plot B) Violin plot of absolute errors
+ggplot(data = accuracy, 
+       aes(x = model, y = ae, fill = model)) + 
+  geom_violin() + 
+  geom_jitter(width = .05, alpha = .2) +
+  labs(title = &quot;Prediction Absolute Errors&quot;,
+       subtitle = &quot;Numbers indicate means&quot;,
+       x = &quot;Model&quot;,
+       y = &quot;Absolute Error&quot;) +
+  guides(fill = FALSE) +
+  annotate(geom = &quot;label&quot;, 
+           x = accuracy_agg$model, 
+           y = accuracy_agg$mae, 
+           label = round(accuracy_agg$mae, 2))</code></pre>
+</div>
+<div id="datasets" class="section level2">
+<h2>Datasets</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">File</th>
+<th align="left">Rows</th>
+<th align="left">Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><a href="https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/college_train.csv">college_train.csv</a></td>
+<td align="left">500</td>
+<td align="left">18</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/college_test.csv">college_test.csv</a></td>
+<td align="left">277</td>
+<td align="left">18</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/house_train.csv">house_train.csv</a></td>
+<td align="left">5000</td>
+<td align="left">21</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/house_test.csv">house_test.csv</a></td>
+<td align="left">1000</td>
+<td align="left">21</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>The <code>college_train</code> and <code>college_test</code> data are taken from the <code>College</code> dataset in the <code>ISLR</code> package. They contain statistics for a large number of US Colleges from the 1995 issue of US News and World Report.</p></li>
+<li><p>The <code>house_train</code> and <code>house_test</code> data come from <a href="https://www.kaggle.com/harlfoxem/housesalesprediction">https://www.kaggle.com/harlfoxem/housesalesprediction</a></p></li>
+</ul>
+<div id="variable-description-of-college_train-and-college_test" class="section level4">
+<h4>Variable description of <code>college_train</code> and <code>college_test</code></h4>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="73%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>Private</code></td>
+<td align="left">A factor with levels No and Yes indicating private or public university.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>Apps</code></td>
+<td align="left">Number of applications received.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>Accept</code></td>
+<td align="left">Number of applications accepted.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>Enroll</code></td>
+<td align="left">Number of new students enrolled.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>Top10perc</code></td>
+<td align="left">Pct. new students from top 10% of H.S. class.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>Top25perc</code></td>
+<td align="left">Pct. new students from top 25% of H.S. class.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>F.Undergrad</code></td>
+<td align="left">Number of fulltime undergraduates.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>P.Undergrad</code></td>
+<td align="left">Number of parttime undergraduates.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>Outstate</code></td>
+<td align="left">Out-of-state tuition.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>Room.Board</code></td>
+<td align="left">Room and board costs.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>Books</code></td>
+<td align="left">Estimated book costs.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>Personal</code></td>
+<td align="left">Estimated personal spending.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>PhD</code></td>
+<td align="left">Pct. of faculty with Ph.D.’s.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>Terminal</code></td>
+<td align="left">Pct. of faculty with terminal degree.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>S.F.Ratio</code></td>
+<td align="left">Student/faculty ratio.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>perc.alumni</code></td>
+<td align="left">Pct. alumni who donate.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>Expend</code></td>
+<td align="left">Instructional expenditure per student.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>Grad.Rate</code></td>
+<td align="left">Graduation rate.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="variable-description-of-house_train-and-house_test" class="section level4">
+<h4>Variable description of <code>house_train</code> and <code>house_test</code></h4>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="73%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>price</code></td>
+<td align="left">Price of the house in $.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>bedrooms</code></td>
+<td align="left">Number of bedrooms.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>bathrooms</code></td>
+<td align="left">Number of bathrooms.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sqft_living</code></td>
+<td align="left">Square footage of the home.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sqft_lot</code></td>
+<td align="left">Square footage of the lot.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>floors</code></td>
+<td align="left">Total floors (levels) in house.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>waterfront</code></td>
+<td align="left">House which has a view to a waterfront.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view</code></td>
+<td align="left">Has been viewed.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>condition</code></td>
+<td align="left">How good the condition is (Overall).</td>
+</tr>
+<tr class="even">
+<td align="left"><code>grade</code></td>
+<td align="left">Overall grade given to the housing unit, based on King County grading system.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sqft_above</code></td>
+<td align="left">Square footage of house apart from basement.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sqft_basement</code></td>
+<td align="left">Square footage of the basement.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>yr_built</code></td>
+<td align="left">Built Year.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>yr_renovated</code></td>
+<td align="left">Year when house was renovated.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>zipcode</code></td>
+<td align="left">Zip code.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>lat</code></td>
+<td align="left">Latitude coordinate.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>long</code></td>
+<td align="left">Longitude coordinate.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sqft_living15</code></td>
+<td align="left">Living room area in 2015 (implies some renovations). This might or might not have affected the lotsize area.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sqft_lot15</code></td>
+<td align="left">lot-size area in 2015 (implies some renovations).</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<div id="packages" class="section level3">
+<h3>Packages</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Package</th>
+<th align="left">Installation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>tidyverse</code></td>
+<td align="left"><code>install.packages("tidyverse")</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>caret</code></td>
+<td align="left"><code>install.packages("caret")</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>partykit</code></td>
+<td align="left"><code>install.packages("partykit")</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>party</code></td>
+<td align="left"><code>install.packages("party")</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="functions-1" class="section level3">
+<h3>Functions</h3>
+<table>
+<colgroup>
+<col width="7%" />
+<col width="12%" />
+<col width="80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Function</th>
+<th align="left">Package</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>trainControl()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Define modelling control parameters</td>
+</tr>
+<tr class="even">
+<td align="left"><code>train()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Train a model</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>predict(object, newdata)</code></td>
+<td align="left"><code>stats</code></td>
+<td align="left">Predict the criterion values of <code>newdata</code> based on <code>object</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>postResample()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Calculate aggregate model performance in regression tasks</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>confusionMatrix()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Calculate aggregate model performance in classification tasks</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="resources" class="section level2">
+<h2>Resources</h2>
+<div id="cheatsheet" class="section level3">
+<h3>Cheatsheet</h3>
+<figure>
+<center>
+<a href="https://github.com/rstudio/cheatsheets/raw/master/caret.pdf"> <img src="https://www.rstudio.com/wp-content/uploads/2015/01/caret-cheatsheet.png" alt="Trulli" style="width:70%"></a><br> <font style="font-size:10px"> from <a href= "https://github.com/rstudio/cheatsheets/raw/master/caret.pdf</figcaption">github.com/rstudio</a></font>
+</figure>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

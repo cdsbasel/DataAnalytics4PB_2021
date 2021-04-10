@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Unsupervised learning</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Machine Learning with R   The R Bootcamp @ DHLab" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="baselrbootcamp.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Unsupervised learning
+### Machine Learning with R<br> <a href='https://therbootcamp.github.io'> The R Bootcamp @ DHLab </a> <br> <a href='https://therbootcamp.github.io/ML-DHLab'> <i class='fas fa-clock' style='font-size:.9em;'></i> </a>  <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;' ></i> </a>  <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a>  <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a>
+### November 2020
+
+---
+
+
+layout: true
+
+&lt;div class="my-footer"&gt;
+  &lt;span style="text-align:center"&gt;
+    &lt;span&gt; 
+      &lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/by-sa.png" height=14 style="vertical-align: middle"/&gt;
+    &lt;/span&gt;
+    &lt;a href="https://therbootcamp.github.io/"&gt;
+      &lt;span style="padding-left:82px"&gt; 
+        &lt;font color="#7E7E7E"&gt;
+          www.therbootcamp.com
+        &lt;/font&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a href="https://therbootcamp.github.io/"&gt;
+      &lt;font color="#7E7E7E"&gt;
+      Machine Learning with R | November 2020
+      &lt;/font&gt;
+    &lt;/a&gt;
+    &lt;/span&gt;
+  &lt;/div&gt; 
+
+---
+
+
+
+
+
+
+
+# Unsupervised learning
+
+.pull-left45[
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;The gaol of Unsupervised learning is the identifikation of &lt;high&gt;hidden structure&lt;/high&gt; in the &lt;high&gt;similarities&lt;/high&gt; of cases or features.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;There are two domains: &lt;high&gt;cluster analysis&lt;/high&gt; and &lt;high&gt;dimensionality reduction&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+&lt;/ul&gt;
+
+]
+
+
+.pull-right45[
+
+&lt;p align = "center"&gt;
+&lt;img src="image/unsupervised.jpg"&gt;&lt;br&gt;
+&lt;font style="font-size:10px"&gt;from &lt;a href="https://www.c-span.org/organization/?9764/Copley-News-Service"&gt;c-span.org&lt;/a&gt;&lt;/font&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left35[
+
+# Two domains of UL
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Dimensionality reduction&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;Focuses on the similarities of &lt;high&gt;features&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Aims to &lt;high&gt;identify relevant dimensions&lt;/high&gt; in the data and is the basis of deep learning.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Cluster analysis&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;Focuses on the similarities of &lt;high&gt;cases&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;ims to &lt;high&gt;identify groups and outliers&lt;/high&gt; in the data.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;  
+&lt;/ul&gt;
+
+]
+
+
+.pull-right55[
+
+&lt;br&gt;
+
+&lt;p align = "center"&gt;
+&lt;img src="image/types.png" height=520px&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+
+---
+
+.pull-left4[
+
+# Gapminder
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Hans Rosling's Gapminder project maps the &lt;high&gt;health and economic development of countries&lt;/high&gt; in the world.&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Are there clearly separable classes of countries&lt;/high&gt;: e.g. &lt;high&gt;Developed versus Devloping&lt;/high&gt; countries.&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align = "center" style="margin-top:55px"&gt;
+&lt;img src="image/rosling.png" height=200px&gt;&lt;br&gt;
+&lt;font style="font-size:10px"&gt;Hans Rosling, 1948-2017, adapted from &lt;a href="https://www.volkskrant.nl/cultuur-media/hans-rosling-68-volksverheffer-met-rocksterstatus~b3746a58/?referer=https%3A%2F%2Fwww.google.com%2F"&gt;volkskrant.nl&lt;/a&gt;&lt;/font&gt;
+&lt;/p&gt;
+
+]
+
+
+.pull-right5[
+&lt;br&gt;
+&lt;p align = "center"&gt;
+&lt;img src="image/gapminder.png" height=520px&gt;&lt;br&gt;
+&lt;font style="font-size:10px"&gt;adapted from &lt;a href="https://www.ullstein-buchverlage.de/nc/buch/details/factfulness-9783548060415.html"&gt;Factfulness, Hans Rosling, Ullstein&lt;/a&gt;&lt;/font&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# Gapminder
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Hans Rosling's Gapminder project maps the &lt;high&gt;health and economic development of countries&lt;/high&gt; in the world.&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Are there clearly separable classes of countries&lt;/high&gt;: e.g. &lt;high&gt;Developed versus Devloping&lt;/high&gt; countries.&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align = "center" style="margin-top:55px"&gt;
+&lt;img src="image/rosling.png" height=200px&gt;&lt;br&gt;
+&lt;font style="font-size:10px"&gt;Hans Rosling, 1948-2017, adapted from &lt;a href="https://www.volkskrant.nl/cultuur-media/hans-rosling-68-volksverheffer-met-rocksterstatus~b3746a58/?referer=https%3A%2F%2Fwww.google.com%2F"&gt;volkskrant.nl&lt;/a&gt;&lt;/font&gt;
+&lt;/p&gt;
+
+]
+
+
+.pull-right5[
+&lt;br&gt;
+&lt;p align = "center"&gt;
+&lt;img src="image/data.gif"&gt;&lt;br&gt;
+&lt;font style="font-size:10px"&gt;data from &lt;a href="https://cran.r-project.org/web/packages/gapminder/README.html"&gt;gapminder&lt;/a&gt;&lt;/font&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# Gap in 1952
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;In 1952, are there &lt;high&gt;classes of countries&lt;/high&gt; concerning life expectancy and GDP per capita?&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Algorithms:&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;&lt;i&gt;k&lt;/i&gt;-means&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;DBSCAN&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;Gaussian mixtures&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/ul&gt;
+
+]
+
+
+.pull-right5[
+&lt;br&gt;
+&lt;p align = "center"&gt;
+&lt;img src="image/gap1952.png"&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+
+---
+
+.pull-left4[
+
+# &lt;i&gt;k&lt;/i&gt;-means
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Maybe the most frequently employed algorithms for cluster analysis.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Algorithm&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;ol class=""&gt;
+    &lt;li&gt;&lt;span&gt;Random &lt;high&gt;start points&lt;/high&gt; for cluster centroids.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Assign cases to &lt;high&gt;closest centroids&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Calculate &lt;high&gt;new cluster centroids&lt;/high&gt; as average of all points.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;
+&lt;p align = "center"&gt;
+&lt;img src="image/kmeans.gif"&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# &lt;i&gt;k&lt;/i&gt;-means
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Maybe the most &lt;high&gt;frequently employed&lt;/high&gt; algorithms for cluster analysis.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Algorithm&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;ol class=""&gt;
+    &lt;li&gt;&lt;span&gt;Random &lt;high&gt;start points&lt;/high&gt; for cluster centroids.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Assign cases to &lt;high&gt;closest centroids&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Calculate &lt;high&gt;new cluster centroids&lt;/high&gt; as average of all points.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;
+
+
+
+
+```r
+# calculate k-means
+gap_kmeans &lt;- kmeans(gap1952, 
+                     centers = 3)
+
+# show content
+names(gap_kmeans)
+```
+
+```
+## [1] "cluster"      "centers"      "totss"       
+## [4] "withinss"     "tot.withinss" "betweenss"   
+## [7] "size"         "iter"         "ifault"
+```
+
+```r
+# show clusters
+gap_kmeans$cluster
+```
+
+```
+##   [1] 3 3 3 2 2 1 2 1 3 1 3 2 3 3 3 3 3 3 3 3 1 3
+##  [23] 3 2 3 3 3 3 3 2 3 2 2 1 1 2 3 2 3 2 3 3 3 2
+##  [45] 1 2 3 1 3 2 3 3 3 3 3 2 2 1 3 3 2 2 2 2 2 2
+##  [67] 2 3 3 3 3 2 3 3 3 3 3 3 3 3 3 2 3 2 3 3 3 3
+##  [89] 3 1 1 2 3 3 1 3 3 3 3 2 3 2 2 2 2 2 3 3 2 3
+## [111] 2 3 3 2 2 3 2 2 3 3 3 1 1 3 3 3 3 3 2 3 3 3
+## [133] 1 1 2 1 3 3 3 3 3
+```
+
+
+]
+
+
+---
+
+.pull-left4[
+
+# &lt;i&gt;k&lt;/i&gt;-selection
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;There is &lt;high&gt;no correct &lt;i&gt;k&lt;/i&gt;&lt;/high&gt;!&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Comparing two aspects a &lt;high&gt;reasonable &lt;i&gt;k&lt;/i&gt;&lt;/high&gt; might be found:&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;&lt;i&gt;k&lt;/i&gt; should be &lt;high&gt;as small as possible&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;The &lt;i&gt;k&lt;/i&gt; clusters should describe the data &lt;high&gt;as accurately as possible&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;&lt;br&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Approaches&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;Elbow of the &lt;high&gt;within variance&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Gap-statistic.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Slope-statistic.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Cluster-instability.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;etc.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;/ul&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;
+
+&lt;p align = "center"&gt;
+&lt;img src="image/k-selection1.gif"&gt;&lt;br&gt;
+&lt;img src="image/k-selection2.gif"&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# &lt;i&gt;k&lt;/i&gt;-selection
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;There is &lt;high&gt;no correct &lt;i&gt;k&lt;/i&gt;&lt;/high&gt;!.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Comparing two aspects &lt;high&gt;reasonable &lt;i&gt;k&lt;/i&gt;&lt;/high&gt; can be identified:&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;&lt;i&gt;k&lt;/i&gt; should be &lt;high&gt;as small as possible&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;The &lt;i&gt;k&lt;/i&gt; clusters should describe the data &lt;high&gt;as accurately as possible&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;&lt;br&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Approaches&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;Elbow of the &lt;high&gt;within variance&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Gap-statistic.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Slope-statistic.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Cluster-instability.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;etc.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;/ul&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+
+
+
+```r
+# load cstab
+library(cstab)
+
+# calculate k-sel
+gap_ksel &lt;- cDistance(as.matrix(gap1952), 
+                      kseq = 2:10,
+                      method = "kmeans")
+
+# show estimated cluster number
+gap_ksel$k_Gap
+```
+
+```
+## [1] 1
+```
+
+```r
+gap_ksel$k_Slope
+```
+
+```
+## [1] 2
+```
+]
+
+---
+
+.pull-left4[
+
+# &lt;i&gt;k&lt;/i&gt;-selection
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;There is &lt;high&gt;no correct &lt;i&gt;k&lt;/i&gt;&lt;/high&gt;!.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Comparing two aspects &lt;high&gt;reasonable &lt;i&gt;k&lt;/i&gt;&lt;/high&gt; can be identified:&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;&lt;i&gt;k&lt;/i&gt; should be &lt;high&gt;as small as possible&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;The &lt;i&gt;k&lt;/i&gt; clusters should describe the data &lt;high&gt;as accurately as possible&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;&lt;br&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Approaches&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;Elbow of the &lt;high&gt;within variance&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Gap-statistic.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Slope-statistic.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Cluster-instability.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;etc.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;/ul&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+
+
+
+```r
+# load cstab
+library(cstab)
+
+# calculate k-sel
+gap_ksel &lt;- cStability(as.matrix(gap1952), 
+                      kseq = 2:10,
+                      method = "kmeans")
+```
+
+
+```r
+# show estimated cluster number
+gap_ksel$k_instab
+```
+
+```
+## [1] 2
+```
+
+
+]
+
+
+
+
+---
+
+.pull-left4[
+
+# DBSCAN
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;DBSCAN = Density-Based Spatial Clustering of Applications with Noise.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Algorithm&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;span&gt;For every point, check other &lt;high&gt;points with distance &lt;b&gt;&amp;epsilon;&lt;/b&gt;&lt;/high&gt;:&lt;br&gt;a. N = 0 &lt;b&gt;&amp;rarr;&lt;/b&gt; &lt;high&gt;outlier&lt;/high&gt;&lt;br&gt;b. N &amp;ge; &lt;i&gt;minPts&lt;/i&gt; &lt;b&gt;&amp;rarr;&lt;/b&gt; &lt;high&gt;core point&lt;/high&gt;&lt;br&gt;c. &lt;i&gt;minPts&lt;/i&gt; &amp;gt; N &amp;gt; 0 &lt;b&gt;&amp;rarr;&lt;/b&gt; &lt;high&gt;undetermined&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Join &lt;high&gt;core points&lt;/high&gt; with distance &amp;lt &lt;b&gt;&amp;epsilon;&lt;/b&gt;; to clusters.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Add &lt;high&gt;Undetermined points&lt;/high&gt; with distance &amp;lt &lt;b&gt;&amp;epsilon;&lt;/b&gt;; to core points to cluster, otherwise outlier.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;
+&lt;p align = "center"&gt;
+&lt;font style="font-size:20px;font-weight:900"&gt;&amp;epsilon; = .2&lt;/font&gt;
+&lt;img src="image/dbscan_1.gif"&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# DBSCAN
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;DBSCAN = Density-Based Spatial Clustering of Applications with Noise.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Algorithm&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;span&gt;For every point, check other &lt;high&gt;points with distance &lt;b&gt;&amp;epsilon;&lt;/b&gt;&lt;/high&gt;:&lt;br&gt;a. N = 0 &lt;b&gt;&amp;rarr;&lt;/b&gt; &lt;high&gt;outlier&lt;/high&gt;&lt;br&gt;b. N &amp;ge; &lt;i&gt;minPts&lt;/i&gt; &lt;b&gt;&amp;rarr;&lt;/b&gt; &lt;high&gt;core point&lt;/high&gt;&lt;br&gt;c. &lt;i&gt;minPts&lt;/i&gt; &amp;gt; N &amp;gt; 0 &lt;b&gt;&amp;rarr;&lt;/b&gt; &lt;high&gt;undetermined&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Join &lt;high&gt;core points&lt;/high&gt; with distance &amp;lt &lt;b&gt;&amp;epsilon;&lt;/b&gt;; to clusters.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Add &lt;high&gt;Undetermined points&lt;/high&gt; with distance &amp;lt &lt;b&gt;&amp;epsilon;&lt;/b&gt;; to core points to cluster, otherwise outlier.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;
+&lt;p align = "center"&gt;
+&lt;font style="font-size:20px;font-weight:900"&gt;&amp;epsilon; = .3&lt;/font&gt;
+&lt;img src="image/dbscan_2.gif"&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# DBSCAN
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;DBSCAN = Density-Based Spatial Clustering of Applications with Noise.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Algorithm&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;span&gt;For every point, check other &lt;high&gt;points with distance &lt;b&gt;&amp;epsilon;&lt;/b&gt;&lt;/high&gt;:&lt;br&gt;a. N = 0 &lt;b&gt;&amp;rarr;&lt;/b&gt; &lt;high&gt;outlier&lt;/high&gt;&lt;br&gt;b. N &amp;ge; &lt;i&gt;minPts&lt;/i&gt; &lt;b&gt;&amp;rarr;&lt;/b&gt; &lt;high&gt;core point&lt;/high&gt;&lt;br&gt;c. &lt;i&gt;minPts&lt;/i&gt; &amp;gt; N &amp;gt; 0 &lt;b&gt;&amp;rarr;&lt;/b&gt; &lt;high&gt;undetermined&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Join &lt;high&gt;core points&lt;/high&gt; with distance &amp;lt &lt;b&gt;&amp;epsilon;&lt;/b&gt;; to clusters.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Add &lt;high&gt;Undetermined points&lt;/high&gt; with distance &amp;lt &lt;b&gt;&amp;epsilon;&lt;/b&gt;; to core points to cluster, otherwise outlier.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+
+
+
+```r
+# load dbscan
+library(dbscan)
+
+# calculate dbscan
+gap_dbscan &lt;- dbscan(scale(gap1952), 
+                     eps = .2)
+
+# show results
+gap_dbscan
+```
+
+```
+## DBSCAN clustering for 141 objects.
+## Parameters: eps = 0.2, minPts = 5
+## The clustering contains 2 cluster(s) and 57 noise points.
+## 
+##  0  1  2 
+## 57 72 12 
+## 
+## Available fields: cluster, eps, minPts
+```
+
+]
+
+---
+
+.pull-left4[
+
+# Eigenschaften von DBSCAN
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Advantages&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;Identifies &lt;i&gt;k&lt;/i&gt;&lt;/high&gt; automatically.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Can identify &lt;high&gt;"complex" clusters&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Can identify &lt;high&gt;outliers&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Disadvantages&lt;/b&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;Very sensitive&lt;/high&gt; to parameter settings.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Hard time with &lt;high&gt;clusters of different density&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;p align = "center"&gt;
+&lt;img src="image/dbscan_adv1.gif"&gt;&lt;br&gt;
+&lt;img src="image/dbscan_adv2.gif"&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# Properties of DBSCAN
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Advantages&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;Identifies &lt;i&gt;k&lt;/i&gt;&lt;/high&gt; automatically.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Can identify &lt;high&gt;"complex" clusters&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Can identify &lt;high&gt;outliers&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Disadvantages&lt;/b&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;Very sensitive&lt;/high&gt; to parameter settings.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Hard time with &lt;high&gt;clusters of different density&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;p align = "center"&gt;
+&lt;img src="image/dbscan_adv3.gif"&gt;&lt;br&gt;
+&lt;img src="image/dbscan_adv4.gif"&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+
+---
+
+.pull-left4[
+
+# Properties of DBSCAN
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Advantages&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;Identifies &lt;i&gt;k&lt;/i&gt;&lt;/high&gt; automatically.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Can identify &lt;high&gt;"complex" clusters&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Can identify &lt;high&gt;outliers&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Disadvantages&lt;/b&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;Very sensitive&lt;/high&gt; to parameter settings.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Hard time with &lt;high&gt;clusters of different density&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;p align = "center"&gt;
+&lt;img src="image/dbscan_adv5.gif"&gt;&lt;br&gt;
+&lt;img src="image/dbscan_adv6.gif"&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# Gaussian mixtures
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;A probabilistic &lt;high&gt;extension of &lt;i&gt;k&lt;/i&gt;-means algorithm&lt;/high&gt; on the basis of multi-variate normal distributions&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Works well with clusters of different &lt;high&gt;orientation and density&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li class="m3"&gt;&lt;span&gt;Straighforward estimation of &lt;i&gt;k&lt;/i&gt; via &lt;high&gt;model comparison&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li class="m4"&gt;&lt;span&gt;Difficulties with &lt;high&gt;complex topologies&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;
+
+&lt;p align = "center"&gt;
+&lt;img src="image/mclust1.png"&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# Gaussian mixtures
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;A probabilistic &lt;high&gt;extension of &lt;i&gt;k&lt;/i&gt;-means algorithm&lt;/high&gt; on the basis of multi-variate normal distributions&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Works well with clusters of different &lt;high&gt;orientation and density&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li class="m3"&gt;&lt;span&gt;Straighforward estimation of &lt;i&gt;k&lt;/i&gt; via &lt;high&gt;model comparison&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li class="m4"&gt;&lt;span&gt;Difficulties with &lt;high&gt;complex topologies&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;
+
+&lt;p align = "center"&gt;
+&lt;img src="image/mclust2.png"&gt;&lt;br&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# Gaussian mixtures
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;A probabilistic &lt;high&gt;extension of &lt;i&gt;k&lt;/i&gt;-means algorithm&lt;/high&gt; on the basis of multi-variate normal distributions&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Works well with clusters of different &lt;high&gt;orientation and density&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li class="m3"&gt;&lt;span&gt;Straighforward estimation of &lt;i&gt;k&lt;/i&gt; via &lt;high&gt;model comparison&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li class="m4"&gt;&lt;span&gt;Difficulties with &lt;high&gt;complex topologies&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+
+
+
+```r
+# load gaussian mixture package
+library(mclust)
+
+# calculate gaussian mixture
+gap_mclust &lt;- Mclust(gap1952)
+
+# show results
+gap_mclust
+```
+
+```
+## 'Mclust' model object: (VVE,3) 
+## 
+## Available components: 
+##  [1] "call"           "data"          
+##  [3] "modelName"      "n"             
+##  [5] "d"              "G"             
+##  [7] "BIC"            "loglik"        
+##  [9] "df"             "bic"           
+## [11] "icl"            "hypvol"        
+## [13] "parameters"     "z"             
+## [15] "classification" "uncertainty"
+```
+
+]
+
+---
+
+.pull-left4[
+
+# Gaussian mixtures
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;A probabilistic &lt;high&gt;extension of &lt;i&gt;k&lt;/i&gt;-means algorithm&lt;/high&gt; on the basis of multi-variate normal distributions&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Works well with clusters of different &lt;high&gt;orientation and density&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li class="m3"&gt;&lt;span&gt;Straighforward estimation of &lt;i&gt;k&lt;/i&gt; via &lt;high&gt;model comparison&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li class="m4"&gt;&lt;span&gt;Difficulties with &lt;high&gt;complex topologies&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+]
+
+.pull-right5[
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+
+
+
+```r
+# lade gaussian mixture
+library(mclust)
+
+# berechne gaussian mixture
+gap_mclust &lt;- Mclust(gap1952)
+
+# zeige Ergebnis
+gap_mclust$classification
+```
+
+```
+##   [1] 1 2 2 2 3 3 3 2 1 3 1 2 2 1 2 2 1 1 1 1 3 1
+##  [23] 1 2 1 2 1 1 2 2 1 2 2 3 3 2 1 2 1 2 1 1 1 3
+##  [45] 3 2 1 3 1 3 2 1 1 1 2 2 3 3 1 1 2 2 3 3 3 2
+##  [67] 3 1 1 2 1 2 1 1 2 1 1 2 1 1 2 2 1 2 1 1 1 2
+##  [89] 1 3 3 2 1 1 3 1 1 2 3 2 1 2 2 3 2 2 1 1 2 1
+## [111] 2 1 2 3 3 1 2 3 2 1 1 3 3 2 2 1 2 1 2 1 2 1
+## [133] 3 3 3 2 1 1 1 1 1
+```
+
+]
+
+
+---
+class: middle, center
+
+&lt;h1&gt;&lt;a href=https://therbootcamp.github.io/ML-DHLab/_sessions/Unsupervised/Unsupervised_practical.html&gt;Practical&lt;/a&gt;&lt;/h1&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
